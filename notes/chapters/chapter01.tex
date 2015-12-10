@@ -1,0 +1,157 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Definition}
+
+A \textbf{category} consists of the following:
+
+\begin{itemize}
+  \item A \textbf{class} of objects $obC$
+
+        if $obC$ is a set, this is a \textit{small} category
+
+  \item For any objects $A$, $B$ $\in$ $C$ \par
+        a set $hom_C$($A$,$B$) of morphisms $f : A \rightarrow B$
+
+        i.e. a homset from $A$ to $B$
+
+  \item For each object $A$ \par
+        a morphism $id_A : A \rightarrow A$
+
+        i.e. an identity morphism for every object
+
+  \item For any objects $A$, $B$, $C$ and morphisms $f : A \rightarrow B$ and $g : B \rightarrow C$ \par
+        the \textbf{composition} is $f ;_{A,B,C} g : A \rightarrow C$
+
+        (also written $g \circ f$, the subscripts for ($;$) are required but sometimes shorthanded)
+
+        such that:
+\begin{itemize}
+  \item For any objects $A$, $B$ and $f : A \rightarrow B$ \par
+        $id_A ; f = f = f ; id_B$ \qquad [i.e. composing the identity with $f$ equals $f$]
+
+  \item For any objects $A$, $B$, $C$, $D$ and morphisms $f : A \rightarrow B$ and $g : B \rightarrow C$ and $h : C \rightarrow D$ \par
+        $f ; (g ; h) = (f ; g) ; h$ \qquad [i.e. composition is associative]
+\end{itemize}
+\end{itemize}
+
+\section{Examples}
+
+\subsection{The category of sets, Set}
+
+\begin{itemize}
+  \item An object is a set
+  \item A morphism $A \rightarrow B$ is a function, the homset contains all function definitions as well as undefinable ones
+  \item The identity $id_A$ is the identity function $x \mapsto x$
+  \item The composite $A \xrightarrow[]{f} B \xrightarrow[]{g} C$ is the composition of a function ~~~~~~~~~~ [$x \mapsto g (f(x))$]
+\end{itemize}
+
+\subsection{The category of matrices, Mat}
+
+\begin{itemize}
+  \item An object is a natural number $n \in \mathbb{N}$
+  \item The morphisms $m \rightarrow n \in hom(m,n)$ are all $m \times n$ matrices ($m$ rows, $n$ cols). i.e. every morphism is a collection of field elements ($t_i^j$) where $i$ runs from 0 to $m-1$ and $j$ from 0 to $n-1$.
+  \item The identity $id_n$ is the identity matrix of $n \times n$ (morphism $n \rightarrow n$) such that it acts as the identity for matrix multiplication
+  \item The composite of $(s_i^j) : m \rightarrow n \in hom(m,n)$ and $(t_j^k) : n \rightarrow p \in hom(p,m)$ is matrix multiplication where the product $(s_i^j ; t_j^k) : m \rightarrow p \in hom(p,m)$ is
+
+$(s_i^j ~\mid~ \substack{i < m \\ j < n}) ~ (t_j^k  ~\mid~  \substack{j < n \\ k < p}) = (\sum\limits_{j<n} {s_i^j t_j^k} \ \mid \ \substack{i < m \\ k < p})$
+
+\end{itemize}
+
+\subsection{The category of towns in Britain}
+
+\begin{itemize}
+  \item An object is a town in Britain
+  \item The morphisms $A \rightarrow B \in hom(A,B)$ are all routes from $A$ to $B$. i.e. a finite sequence (list) of adjacent towns.
+  \item The identity $id_A$ is a route from a town $A$ to itself which consists of of a single element $A$.
+
+    i.e. the identity always is a list of length 1.
+
+  \item The composite of $f : A \rightarrow B$ and $g : B \rightarrow A$ is the concatenations of the routes $f$ and $g$.
+
+    e.g. if $f = [A,A_1,A_2,A_3,B]$ and $g = [B,B_1,B_2,B_3,C]$ then $f ; g = [A,A_1,A_2,A_3,B,B_1,B_2,B_3,C]$
+
+\end{itemize}
+
+\section{Homework Examples}
+
+\subsection{The category of groups and group homomorphisms, Grp}
+
+\begin{itemize}
+  \item An object is a group
+  \item The morphism $h : G \rightarrow H \in hom(G,H)$ is a group homomorphism. \par
+        i.e. a function that preserves the algebraic structure from group $(G,*)$ in group $(H,\bullet)$: \par
+        given $a * b = c$ we have $h(a) \bullet h(b) = h(c)$ \par
+        i.e. $ h(a * b) = h(a) \bullet h(b)$
+  \item The identity $id_G$ is a homomorphism that maps $G$ to itself.
+
+    More specifically, given $G = (X,e,*)$, $x \in X$:
+
+    $id_G : G \rightarrow G$
+
+    $id_G = x \mapsto x$
+
+  \item The composite of morphisms $h : G \rightarrow H$ and $k : H \rightarrow K$ is $h ; k : G \rightarrow K$ or $k \circ h : G \rightarrow K$ \par i.e. a homomorphism from $G$ to $K$
+\end{itemize}
+
+A \textbf{group} ($G$) is a set with an operation ($\bullet : G^2 \rightarrow G$) that combines two elements in $G$ to form a third element in $G$. In computer science, we generally include element $e$ to remove existentials. For $(G,\bullet)$ to be a group, it must satisfy:
+\begin{itemize}
+  \item \textbf{Closure} : $(a , b \in G) \Rightarrow (a \bullet b \in G)$.
+  \item \textbf{Associativity} : $\forall a,b,c \in G ~.~ (a \bullet b) \bullet c = a \bullet (b \bullet c)$
+  \item \textbf{Identity} : $\forall a \in G ~.~ \exists e \in G ~.~ e \bullet a = a \bullet e = a$
+  \item \textbf{Inverse Element} : $\forall a \in G ~.~ \exists b \in G ~.~ a \bullet b = b \bullet a = e$ \par
+        $*$ note: a group without inverse functions is a \textbf{monoid}.
+
+         i.e. for morphism $\mathbb{N} \rightarrow \mathbb{N}$, the set of all functions is a monoid while the set of all bijections is a group.
+\end{itemize}
+
+\subsection{The category of vector spaces and linear transformations, K-Vect}
+
+\begin{itemize}
+  \item An object is a vector space (a scalable collection of vectors) over a fixed field $K$
+  \item The morphism $V \rightarrow W \in hom(V,W)$ is a \textbf{K-linear map}, transformations between two linear subspaces that preserve addition and scalar multiplication
+  \item The identity $id_V$ is an endomorphism on $V$ (a morphism from vector space $V$ to itself)
+
+    More specifically, given $v \in V$:
+
+    $id_V = v \mapsto v$
+
+  \item The composite of morphisms $f : V \rightarrow W$ and $g : W \rightarrow Y$ is $f ; g : V \rightarrow Y$
+\end{itemize}
+
+
+\subsection{The category of posets (partially ordered sets) and monotone functions}
+
+\begin{itemize}
+  \item An object is a poset
+  \item For $(S,\leq)$ and $(T,\leq)$, the morphism $f : S \rightarrow T  \in hom(S,T)$ is a \textbf{order-preserving} or \textbf{monotone} function. \par
+        A monotone function is one such that: \par
+        $\forall x,y \in S . (x \leq y) \Rightarrow f(x) \leq f(y)$
+  \item The identity $id_S$ is a morphism from $S$ to itself
+  \item The composite of $f : S \rightarrow T$ and $g : T \rightarrow U$ is $f ; g : S \rightarrow U$ or $(g \circ f) : S \rightarrow U$, which is also monotone
+\end{itemize}
+
+Posets $(S,\leq)$ formalise the intuitive concept of ordering, sequencing, or arrangement of the elements of a set. \par
+
+Posets consist of a set ($S$) and a binary relation ($\leq$) that indicates a partial order. \par
+
+A \textbf{partial order} is a binary relation between elements of a set ($a,b,c \in S$) that is:
+\begin{itemize}
+  \item \textbf{reflexive}: $a \leq a$
+  \item \textbf{antisymmetric}: $(a \leq b) \wedge (b \leq a) \Rightarrow a = b$
+  \item \textbf{transitive}: $(a \leq b) \wedge (b \leq c) \Rightarrow a \leq c$
+\end{itemize}
+
+\subsection{The category of set relations, Rel}
+
+\begin{itemize}
+  \item An object is a set
+  \item The morphism $f : A \rightarrow B  \in hom(A,B)$ is a relation. \par
+        A relation is between $A$ and $B$ is defined by the crossproduct of both sets, i.e. a set of tuples. \par
+        $(R \subseteq A \times B)$ and $\{(a,b) ~\mid~ (a,b) \in R ~\wedge~ a \in A ~\wedge~ b \in B\}$
+  \item The identity morphism $id_A : A \rightarrow A$ is the identity relation $\{(a,a) \in A^2 ~\mid~ a \in A\}$
+  \item The composite of $R : A \rightarrow B$ and $S : B \rightarrow C$ is $R ; S : A \rightarrow C$ given by: \par
+        $S \circ R = \{(a,c) \in A \times C ~\mid~ \exists b \in B . (a,b) \in R \wedge (b,c) \in S\}$
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,479 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+Category theory was initially introduced in the 1940s as a way to define naturality. Before looking into that, however, we define more examples of functors.
+
+\section{More functors}
+
+\subsection{Example 1: an arbitrary functor}
+
+We can define functor $F : \textbf{Set} \rightarrow \textbf{Set}$ by the following mappings:
+\begin{itemize}
+\item objects: $X \mapsto X^2 + 7$, where $7 = \{0,1,2,3,4,5,6\}$ is the set of seven objects.
+\item morphisms: \quad  $g = Ff$ \quad in
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X      &       & X^2 + 7 \\
+\dTo{f}&\rTo{F}& \dTo{}{g} &\\
+Y      &       & Y^2 + 7 &\\
+\end{diagram}
+\end{tabular}
+\qquad e.g.
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+Towns           &       & Towns^2 + 7 \\
+\dTo{population}&\rTo{F}& \dTo{}{F~population} &\\
+\mathbb{N}      &       & \mathbb{N}^2 + 7 &\\
+\end{diagram}
+\end{tabular}
+\end{itemize}
+
+Given the morphism $f \in \textbf{Set}$ we can define the mapping as follows:
+
+$F~f =$
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X^2 + 7 \\
+\dTo{}{F~f} &\\
+Y^2 + 7 &\\
+\end{diagram}
+\end{tabular}
+$=$
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+\textbf{inl}(x,x')     &   & \textbf{inr}~j\\
+\dTo{Ff}  & + & \dTo{}{Ff} \\
+\textbf{inl}(f~x,f~x') &   & \textbf{inl}~j\\
+\end{diagram}
+\end{tabular}
+
+Hence, composition is as follows:
+
+Given
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X \\
+\dTo{f}\\
+Y\\
+\dTo{g}\\
+Z\\
+\end{diagram}
+\end{tabular}
+we know
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+               & X^2 + 7\\
+\ldTo(1,2){Ff} &\\
+       Y^2 + 7 &\\
+               & \rdTo(1,2){Fg}\dTo{}{F(f;g)} \\
+               & Z^2 + 7\\
+\end{diagram}
+\end{tabular}
+must commute. i.e. $(Ff);(Fg) = F(f;g)$
+
+To check composition works, we check the each sum case (\textbf{inl} and \textbf{inr}):
+\begin{itemize}
+\item Case for \textbf{inl}:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+                           & \textbf{inl}(x,x')\\
+\ldMapsto(1,2){Ff}         & &\rdMapsto(1,4){}{F(g\circ f)}\\
+\textbf{inl}(fx,fx')       &                   \\
+\dMapsto{Fg}               &     \\
+\textbf{inl}~(g(fx),g(fx')) & = & \textbf{inl}~((g\circ f)~ x,(g\circ f)~ x')\\
+\end{diagram}
+\end{tabular}
+commutes because $g(fx) = (g\circ f)~x$
+\item Case for \textbf{inr}:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+               & \textbf{inr}~j\\
+\ldMapsto(1,2){Ff} &\\
+\textbf{inr}~j &\\
+               & \rdMapsto(1,2){Fg}\dMapsto{}{F(g\circ f)} \\
+               & \textbf{inr}~j\\
+\end{diagram}
+\end{tabular}
+\quad commutes
+\end{itemize}
+
+\subsection{Example 2: Powerset}
+
+$F : X \mapsto \mathcal{P}_X$ (powerset of $X$)
+
+Given
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X\\
+\dTo{f}\\
+Y\\
+\end{diagram}
+\end{tabular}
+the mapped morphism would be
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+\mathcal{P}_X\\
+\dTo{Ff}\\
+\mathcal{P}_Y\\
+\end{diagram}
+\end{tabular}
+defined by
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+u \subseteq X\\
+\dMapsto{Ff}\\
+\{f~x ~|~x\in u\}\\
+\end{diagram}
+\end{tabular}
+
+Objects in the powerset are subsets of $X$. Thus, $u$ is any subset of $X$ and is mapped to any subset of $Y$.
+
+\subsection{Example 3: List}
+
+$F : \textbf{Set} \rightarrow \textbf{Set}$
+\begin{itemize}
+\item Objects:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X & \rMapsto{F} & \textbf{List}~X\\
+\end{diagram}
+\end{tabular}
+\item Morphisms:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X      &             &\textbf{List}~X\\
+\dTo{f}& \rMapsto{F} &\dTo{Ff}\\
+Y      &             &\textbf{List}~Y\\
+\end{diagram}
+\end{tabular}
+where $Ff$ is defined by
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+l \in  \textbf{List}~X\\
+\dTo \\
+({\tt map} f~l) \in \textbf{List}~Y \\
+\end{diagram}
+\end{tabular}
+\end{itemize}
+
+\subsection{Example 4: Opposite to Powerset}
+
+$F : \textbf{Set}^{op} \rightarrow \textbf{Set}$
+\begin{itemize}
+\item Objects:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X & \rMapsto{F} & \mathcal{P}_X\\
+\end{diagram}
+\end{tabular}
+\item Morphisms:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X      &             &\mathcal{P}_X\\
+\dTo{f}& \rMapsto{F} &\uTo{}{Ff}\\
+Y      &             &\mathcal{P}_Y\\
+\end{diagram}
+\end{tabular}
+where $Ff$ is defined by
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+\{x \in X ~|~ f~x \in u\}\\
+\uTo \\
+u \in \mathcal{P}_Y \\
+\end{diagram}
+\end{tabular}
+\end{itemize}
+
+Note that $F$ is a \textbf{contravariant} functor. This definition will be coming up soon.
+
+\subsection{Example 5 : Functor $C^2 \rightarrow C$}
+
+$F : \textbf{Set}^2 \rightarrow \textbf{Set}$
+\begin{itemize}
+\item Objects:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+(X,X') & \rMapsto{F} & X + X'\\
+\end{diagram}
+\end{tabular}
+\item Morphisms:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+~(X,X')        &             &X+X'\\
+\dTo{f}\dTo{f'}& \rMapsto{F} &\dTo{}{F(f,f')}\\
+~(Y,Y')        &             &Y+Y'\\
+\end{diagram}
+\end{tabular}
+where $F(f,f')$ is defined by
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+\textbf{inl}~x \in X& & \textbf{inr}~x' \in X' \\
+\dMapsto            &+& \dMapsto\\
+\textbf{inl}~f x    & & \textbf{inr}~f x'\\
+\end{diagram}
+\end{tabular}
+\end{itemize}
+
+In general, if $C$ is a category with binary coproducts, we can define a functor $+ : C^2 \rightarrow C$.
+
+\section{Natural transformations}
+
+In the diagram
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+C&\rTo{F} &D\\
+ &\dImplies{}{\alpha}&\\
+C&\rTo{}{G} &D\\
+\end{diagram}
+\end{tabular}
+$\alpha$ is a natural transformation from $F$ to $G$.
+
+$\forall x \in C ~.~ \alpha : F \Rightarrow G $ provides a $D$ morphism $FX \xrightarrow{\quad \alpha_X\quad} GX$ such that for any $C$ morphism $X \xrightarrow{\quad f\quad} Y$ the following square commutes:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+FX            &\rTo{Ff}   &FY\\
+\dTo{\alpha_X}&           &\dTo{}{\alpha_Y}\\
+GX            &\rTo{}{Gf} &GY\\
+\end{diagram}
+\end{tabular}
+
+\subsection{Example}
+
+Given the \textbf{List} functor defined before (the one that maps lists), we can show that:
+
+$reverse_X : \textbf{List}~X \rightarrow \textbf{List}~X$ is a natural transformation.
+
+To do this, we must show commutativity.
+
+Given
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+\textbf{List}~X \\
+\dTo{rev_X}\\
+\textbf{List}~X \\
+\end{diagram}
+\end{tabular}
+we must show that
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+\textbf{List}~X &\rTo{List f}   &\textbf{List}~Y \\
+     \dTo{rev_X}&           &\dTo{}{rev_Y}\\
+\textbf{List}~X &\rTo{}{List f} &\textbf{List}~Y \\
+\end{diagram}
+\end{tabular}
+commutes.
+
+*note: $List~f = map~f$, which is how the $List$ functor would be implemented in some programming languages (like Haskell).
+
+The following diagram depicts this precise property:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+[x_0, \dots, x_{n-1}] &\rMapsto{\quad map ~ f\quad} &[fx_0,\dots,fx_{n-1} ] \\
+     \dMapsto{rev_X}&           &\dMapsto{}{rev_Y}\\
+[x_{n-1}, \dots, x_0] &\rTo{}{\quad map ~ f\quad} &[fx_{n-1},\dots,fx_0 ] \\
+\end{diagram}
+\end{tabular}
+
+\subsection{Non-example}
+
+The transformation ($rev'$) which reverses a list given no duplicates is not natural. We can prove this by defining a case where the diagram does not commute. This consists of a function and a list onto which we map said function.
+
+Given set $S = {a,b,c}$, we define function $f : S \rightarrow S$ to be:
+
+$
+f(a) = a \\
+f(b) = a \\
+f(c) = c
+$
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+[a,b,c] &\rMapsto{\quad map ~ f\quad} &[a,a,c] &\rMapsto{\quad rev'_Y \quad}  &[a,a,c] \\
+     \dMapsto{rev'_X}&                 &  &  &  \neq   \\
+[c,b,a] &\rTo{}{\quad map ~ f\quad} &  &  & [c,a,a] \\
+\end{diagram}
+\end{tabular}
+
+Does not commute because $[a,a,c] \neq [c,a,a]$.
+
+\section{Covariance and contravariance}
+
+A \textbf{covariant} functor maps to morphisms going in the same direction of the original mapped morphism.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X       & &FX\\
+\dTo{f} & &\dTo{}{Ff}\\
+Y       & &FY\\
+\end{diagram}
+\end{tabular}
+
+A \textbf{contravariant} functor maps to morphisms going in the opposite direction of the original mapped morphism.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X       & &FX\\
+\dTo{f} & &\uTo{}{Ff}\\
+Y       & &FY\\
+\end{diagram}
+\end{tabular}
+
+In other words, covariance preserves the ordering of types while contravariance reverses this order.
+
+Sometimes, we refer to structures with only covariant (positive) or contravariant (negative) occurences as \textbf{functorial}, which means there is an obvious way to extend the structure to make a functor.
+
+Informally, \textbf{non-functorial} structures have both positive and negative occurences. This means there is no obvious way of extending it to become a functor. However, we don't know otherwise, i.e. there may be a way.
+\subsection{Example: arrow (function types)}
+
+The left side of an arrow is contravariant. This can be explained in category theory as the following functor:
+
+$F : \textbf{Set}^{op} \times \textbf{Set} \rightarrow \textbf{Set}$
+\begin{itemize}
+\item Objects:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+(X,Y) & \rMapsto{F} & X \rightarrow Y\\
+\end{diagram}
+\end{tabular}
+\item Morphisms:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+~(X,Y)        &             &X \rightarrow Y\\
+\uTo{f}\dTo{g}& \rMapsto{F} &\dTo{}{f;h;g}\\
+~(X',Y')      &             &X' \rightarrow Y'\\
+\end{diagram}
+\end{tabular}
+where $h : X \rightarrow Y$
+\end{itemize}
+
+Note that having $\textbf{Set}^{op}$ is the only way the function type can be defined since there would be no way to create the functor otherwise. This is analogous to $C^{op} \times C \rightarrow \textbf{Set}$ seen before.
+
+The implications of this is that in functions with subtypes (generally speaking, Object Oriented languages), we need to deal with left side contravariance of arrows.
+
+e.g. Given {\tt String} $\leq$ {\tt Object}
+\begin{itemize}
+\item {\tt String -> String} \quad can be safely used wherever you expect \quad  {\tt String -> Object}
+\item {\tt Object -> String} \quad can be safely used wherever you expect \quad {\tt String -> String}
+\end{itemize}
+
+As {\tt fold} is a higher-order function, and takes one as an argument, it will have both possitive and negative occurences. Hence, it has no simple functor.
+
+\subsection{Example: more on programming languages}
+
+Programming languages that support subtyping must deal with variance. Variance refers to how subtyping between complex types relates to subtyping between their components.
+
+For example, in C\#:
+\begin{itemize}
+\item {\tt Enumerable<Cat>} is a subtype of {\tt Enumerable<Animal>}, i.e. {\tt Enumerable<T>} is \textbf{covariant} on {\tt T}.
+\item {\tt Action<Animal>} is a substype of {\tt Action<Cat>}, i.e. {\tt Action<T>} is \textbf{contravariant} on {\tt T}
+\end{itemize}
+
+This problem can be observed in Java and C\# arrays. To avoid errors when creating an {\tt Object} array, should we treat this as:
+\begin{itemize}
+\item \textbf{covariant}: {\tt String[]} is a {\tt Object[]}
+
+However, you should always be able to put {\tt Integer} in {\tt Object[]}, so treating {\tt String[]} as a {\tt Object[]} results in errors when writing.
+
+\item \textbf{contravariant}: {\tt String[]} is a {\tt Object[]}
+
+However, you should expect to only read {\tt String} from {\tt String[]}, so treating {\tt Object[]} as a {\tt String[]} results in errors when reading since {\tt Object[]} could contain {\tt Integer}.
+
+\item \textbf{invariant}: {\tt String[]} and {\tt Object[]} are different
+
+However, making arrays invariant rules out useful polymorphic programs.
+\end{itemize}
+
+To make arrays polymorphic, the designers of Java and C\# made all arrays covariant. This, however causes runtime errors when writing into arrays, which the designers deal with using exceptions. e.g. {\tt ArrayStoreException } in Java. This is known as ``ad-hoc polymorphism''. i.e. Polymorphism where we get different behaviour depending on the type.
+
+This was until the addition of generics, which provided a method of creating polymorphic functions without relying on covariance, which allows type checking for errors at compile time rather than runtime. This is known as ``parametric polymorphism''. i.e. Polymorphism where we get the same behaviour regardless the type--as in functional programs.
+
+\section{Exercises}
+
+\subsection{A transformation that doubles entries}
+
+Given a transformation that doubles entries on a list:
+
+$\alpha_x : \text{List}~\textbf{X} \rightarrow \text{List}~\textbf{X}
+= [x_0 , \dots , x_{n-1}] \mapsto [x_0 , x_0 , \dots , x_{n-1} , x_{n-1}]$
+
+Prove it is natural.
+
+Given $f : X \rightarrow Y$
+
+We can show $\alpha$ is natural through the following square commutes:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+[x_0 , \dots , x_{n-1}] &\rMapsto{\quad map ~ f\quad} &  &  &[f x_0 , \dots , f x_{n-1}] \\
+     \dMapsto{\alpha_X}&                 &  &  &  \dMapsto{}{\quad \alpha_Y \quad}   \\
+[x_0 , x_0 , \dots , x_{n-1} , x_{n-1}] &\rTo{}{\quad map ~ f\quad} &  &  & [f x_0 , f x_0 , \dots , f x_{n-1} , f x_{n-1}]\\
+\end{diagram}
+\end{tabular}
+
+As this is natural, behaviour does not depend on the type of the argument. Thus, this is parametrically polymorphic on \textbf{X}.
+
+\subsection{A transformation that only reverses lists of natural numbers}
+
+Given a transformation that reverses the list only if \textbf{X} $=\mathbb{N}$:
+
+\[ \beta_x : \text{List}~\textbf{X} \rightarrow \text{List}~\textbf{X}
+=\begin{cases}
+      [x_0 , \dots , x_{n-1}] \mapsto [x_0 , \dots , x_{n-1} ] & \textbf{X} \neq \mathbb{N} \\ \\
+      [x_0 , \dots , x_{n-1}] \mapsto [ x_{n-1} , \dots , x_0 ] & \textbf{X} = \mathbb{N}
+   \end{cases}
+\]
+
+Prove it not is natural.
+
+Given $f : X \rightarrow \mathbb{N}$ where $X = {a,b,c}$
+
+We can show $\alpha$ is natural through the following square commutes:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+[a,b,c] &\rMapsto{\quad map ~ f\quad} & [f~a,f~b,f~c]  & \rMapsto{\quad \beta_\mathbb{N}\quad}  & [f~c , f~b, f~a] \\
+     \dMapsto{\quad \beta_X\quad}&                 &  &  & \neq  \\
+[a,b,c] &\rTo{}{\quad map ~ f\quad} &  &  & [f~a,f~b,f~c]\\
+\end{diagram}
+\end{tabular}
+
+The diagram above does not commute, thus, is not natural.
+
+Since this is not natural, and behaviour depends on the type of the argument, in this case whether they are natural numbers, this is ad-hoc polymorphism.
+
+\subsection{A transformation that only reverses lists of countably infinite types}
+
+Given a transformation that reverses the list only if \textbf{X} is countably infinite:
+
+\[ \gamma_x : \text{List}~\textbf{X} \rightarrow \text{List}~\textbf{X}
+=\begin{cases}
+      [x_0 , \dots , x_{n-1}] \mapsto [x_0 , \dots , x_{n-1} ] & \textbf{X}\text{ is not countably infinite} \\ \\
+      [x_0 , \dots , x_{n-1}] \mapsto [ x_{n-1} , \dots , x_0 ] & \textbf{X}\text{ is countably infinite}
+   \end{cases}
+\]
+
+Prove it not is natural.
+
+Given $f : \mathbb{B} \rightarrow \mathbb{N}$:
+\[
+f(b) =\begin{cases}
+      0 & b = true \\ \\
+      1 & b = false
+   \end{cases}
+\]
+
+We can show $\alpha$ is natural through the following square commutes:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+[true,false] &\rMapsto{\quad map ~ f\quad} & [0,1]  & \rMapsto{\quad \beta_\mathbb{N}\quad}  & [1,0] \\
+     \dMapsto{\quad \beta_\mathbb{B}\quad}& &  &  & \neq  \\
+[true,false] &\rTo{}{\quad map ~ f\quad} &  &  & [0,1]\\
+\end{diagram}
+\end{tabular}
+
+The diagram above does not commute, thus, is not natural. In fact, this example would also work for the previous exercise.
+
+\end{document}

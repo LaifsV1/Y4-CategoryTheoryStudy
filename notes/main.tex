@@ -1,0 +1,119 @@
+\title{Individual Study 2 Report}
+\author{Yu-Yang Lin}
+\date{\today}
+
+% page layout stuff
+\documentclass[11pt,twoside]{report}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
+\usepackage{changepage}
+\usepackage{subfiles}
+\usepackage{booktabs}% http://ctan.org/pkg/booktabs
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+% language/encoding stuff
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\setlength{\parskip}{1em}
+\setlength\parindent{0pt}
+\usepackage[nodayofweek]{datetime}
+\usepackage{listings}
+
+% Palatino for rm and math | Helvetica for ss | Courier for tt
+\usepackage{mathpazo} % math & rm
+\linespread{1.05} % Palatino needs more leading (space between lines)
+\usepackage[scaled]{helvet} %
+\usepackage{courier} % tt
+\normalfont
+\usepackage[T1]{fontenc}
+
+% maths stuff
+\usepackage{tikz}
+\usepackage{natbib} %bibliography management
+\usepackage{diagrams} %commutative diagrams by Paul Taylor
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{syntax}
+\usepackage{bussproofs} %bussproof by Samuel R. Buss
+\usepackage{boxproof} %boxproof by Paul Taylor
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+%NEW quantifier (fresh)
+\usepackage{graphics} %needed for the NEW quantifier
+\newcommand\new[0]{\reflectbox{\ensuremath{\mathsf{N}}}}
+%The quantifier itself, a reversed sans-serif N
+%(by analogy with the reversed E of `exists'
+%and the reversed A of `forall')
+\newcommand\New[1]{\new #1.}
+%A macro, as in \New{a}\phi
+\usepackage{array}
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+
+        \Huge
+        \textbf{Category Theory}
+
+        \vspace{0.5cm}
+        \LARGE
+
+        \vspace{1.5cm}
+
+        \textbf{Yu-Yang Lin}\\
+        1228863\\
+        MSci in Computer Science
+
+        \vfill
+
+        Individual Study 2 Report\\
+        Supervised by Dr. Paul B. Levy
+
+        \vspace{0.8cm}
+
+        \Large
+        School of Computer Science\\
+        University of Birmingham\\
+        United Kingdom\\
+        \today
+
+    \end{center}
+\end{titlepage}
+
+\chapter*{}
+\begin{center}\textit{To my family and friends}\end{center}
+
+\chapter*{Acknowledgements}
+I want to thank Paul for teaching us about Category Theory and supervising us, as well as my fellow Category Theorists, for being in the meetings--helping me understand many of the topics. Those were very interesting meetings.
+
+I would also like to thank Dan Ghica, who suggested I should take Individual Study on Category Theory with Paul.
+
+Finally, I would like to thank Martín Escardó for helping me with Agda proofs.
+\tableofcontents
+
+\chapter{What is a Category?}
+\subfile{chapters/chapter01}
+
+\chapter{Properties of categories}
+\subfile{chapters/chapter02}
+
+\chapter{Functors and more categories}
+\subfile{chapters/chapter03}
+
+\chapter{Cones, Products and Sums}
+\subfile{chapters/chapter04}
+
+\chapter{Functors and Naturality}
+\subfile{chapters/chapter05}
+
+\chapter{Natural transformations and whiskered composition}
+\subfile{chapters/chapter06}
+
+\chapter{Monads}
+\subfile{chapters/chapter07}
+
+\chapter{Categories in Agda}
+\subfile{chapters/chapter08}
+
+\end{document}

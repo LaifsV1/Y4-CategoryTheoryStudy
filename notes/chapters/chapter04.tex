@@ -1,0 +1,243 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{The category of cones}
+
+\newcommand{\acat}[1]{\mathcal{#1}}
+
+Given $A,B,V,W\in \acat{C}$, cones over $A,B \in \acat{C}$ form a category $Cone(\acat{C},A,B) or Cone_{\acat{C}}(A,B)$.
+
+A \textbf{cone} from $V$ to $A$ and $B$ consists of:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+              & V & \\
+\ldTo(1,2){f} &   & \rdTo(1,2){g}&\\
+             A&   &B&\\
+\end{diagram}
+& &
+\end{tabular}
+\par
+
+A \textbf{cone morphism} from $(V,f,g)$ to $(W,h,k)$ is a $\acat{C}$ morphism $V \xrightarrow{\quad r\quad} W$ such that the two triangles, from $V$ through $W$ to $A$ and to $B$, commute.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+V & \rTo{r}  & W \\
+\dTo{f}  &\rdTo{g \qquad} \ldTo{}{\qquad h} &\dTo{}{k} \\
+A & & B \\
+\end{diagram}
+& &
+\end{tabular}
+\par
+
+$f$ and $r;h$ are equal, as do $g$ and $r;k$, i.e. $r;h = f$ and $r;k=g$.
+
+If a diagram commutes, any two paths from one object to another are equal.
+
+Given $r : V \rightarrow W$ and $s : W \rightarrow X$, composition is the same as composition in $\acat{C}$, with the added check for commutativity of the triangles.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+V & \rTo{r}  & W & \rTo{s} & X \\
+  & \rdTo(1,2){f}\rdTo(3,2){g \qquad} \ldTo(1,2){}{\qquad h} & & \rdTo(1,2){}{k \qquad}\ldTo(3,2){}{\qquad l}\ldTo(1,2){}{m} \\
+  & A & & B \\
+\end{diagram}
+& &
+\end{tabular}
+\par
+
+i.e. $r;s;l = f$ and $r;s;m = g$.\par
+$f = r;h \wedge
+h = s;l \newline
+\therefore f = r;s;l$ \par
+$g = r;k \wedge
+k = s;m \newline
+\therefore g = r;s;l$
+
+\section{Product object (categorical product) in a category of cones}
+
+A product of $A$ and $B$ is a ``terminal cone'' over $A$ and $B$; i.e. a terminal object in $Cone_{\acat{C}}(A,B)$.
+
+Given \textbf{projections} $\Pi_1 = (a,b) \mapsto a$ and $\Pi_2 = (a,b) \mapsto b$ \par
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+              & A \times B & \\
+\ldTo(1,2){\Pi_1} &   & \rdTo(1,2){\Pi_2}&\\
+             A&   &B&\\
+\end{diagram}
+& &
+\end{tabular}
+\par
+Where $\Pi_1$ and $\Pi_2$ are called the left and right projections respectively.
+
+To show that there is a unique morphism to $A \times B$, we must prove that such morphism exists, and is unique.
+
+For example, in \textbf{Set}:
+
+We start by defining a unique a morphism from $V$ to $A \times B$.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+  V & \rDashto{s}  & A \times B \\
+  \dTo{f}  &\rdTo{g \qquad} \ldTo{}{\qquad \Pi_1} &\dTo{}{\Pi_2} \\
+  A & & B \\
+\end{diagram}
+& &
+\end{tabular}
+\par
+
+Given $x \in V$, we can define $h = x \mapsto (f x, g x)$, proving such morphism indeed exists.
+
+We also know $\Pi_1(s(x)) = f(x)$ and $\Pi_2(s(x)) = g(x)$ because $s$ is a cone morphism and paths much commute.
+
+Hence, we know $s$ a unique morphism. i.e. $s;\Pi_1=f=h;\Pi_1$ and $s;\Pi_2=g=h;\Pi_2$~,~ $\therefore s = h$
+
+\section{The sum of sets}
+
+The sum of sets $A$ and $B$ is defined by a union:
+
+$A + B = \{ \textbf{inl}~ x ~|~ x \in A\} \cup \{ \textbf{inr}~ y ~|~ y \in B\}$
+
+where $\textbf{inl}$ and $\textbf{inr}$ are injective:\quad $\forall x,y . \textbf{inl} ~x \neq \textbf{inr}~y$
+
+Thus \quad $\textbf{inl}~x = (0,x)$ \quad and\quad $\textbf{inr}~y = (1,y)$
+
+note that this holds, even for $A + A$ or $\mathbb{N} + \mathbb{N}$.
+
+e.g. $\textbf{inl}~3 \neq \textbf{inr}~3 \in \mathbb{N} + \mathbb{N}$
+
+Note: the set of functions $A \rightarrow B$ can be written in notation $B^A$. This is because the number of elements in $B^A$ is $m^n$ where $m = size(B), n=size(A)$.
+
+\section{The category of cocones}
+
+Let $A,B \in C$, a \textbf{cocone} over $A,B$ is the dual notion of a \textbf{cone}, and defined by the following diagram:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+              & V & \\
+\ruTo(1,2){f} &   & \luTo(1,2){g}&\\
+             A&   &B&\\
+\end{diagram}
+& &
+\end{tabular}
+\par
+
+So a morphism from cocone $(V,f,g)$ to cocone $(W,h,k)$ is $R$ and defined by the following diagram:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+V & \rTo{r}  & W \\
+\uTo{f}  &\luTo{g \qquad} \ruTo{}{\qquad h} &\uTo{}{k} \\
+A & & B \\
+\end{diagram}
+& &
+\end{tabular}
+\par
+
+Composition is defined by the dual concept of composition in cones.
+
+We therefore obtain a category $Cocone_C(A,B)$ of cones over $A,B$.
+
+\subsection{Coproducts and initial cones in Set}
+
+The \textbf{coproduct} (sum defined in section 4.3) $A+B$ is an ``initial cone'' in $Cocone_{Set}(A,B)$.
+
+To show $A+B$ is initial in $Cocone_{Set}(A,B)$, we must show there is a unique morphism $R : A+B \rightarrow V$.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+  V & \lDashto{R}  & A + B \\
+  \uTo{f}  &\luTo{g \qquad} \ruTo{}{\qquad \textbf{inl}} &\uTo{}{\textbf{inr}} \\
+  A & & B \\
+\end{diagram}
+& &
+\end{tabular}
+\par
+
+
+To do this, we define a function $s$ given $x,y \in A+B$:
+\begin{flalign*}
+s = \begin{cases}
+      \textbf{inl}~x \mapsto f x \\
+      \textbf{inr}~y \mapsto g y
+   \end{cases} &&
+\end{flalign*}
+
+We know $s$ is equal to $R$, and hence a unique morphism, because:
+\begin{itemize}
+\item $\textbf{inl};s$ and $f$ commute
+\item $\textbf{inr};s$ and $g$ commute
+\end{itemize}
+
+Given the diagram commutes, because it's a cone morphism, the morphisms are all equal there is a unique function.
+
+\subsection{The dual notion}
+
+A coproduct in $C$ for $A,B$ is a product in $C^{op}$ for $A,B$.
+
+\section{Generalising from binary to arbitrary}
+
+\subsection{Generalised categorical products}
+Generalised products are denoted by the \textbf{categorical product} of the $I$ indexed family $A_i$ where $i \in I$, and $I$ is a set, countable or uncountable, that indexes the family. These are n-ary products if $I$ is of size $n$.
+
+This is given by $\prod_{i \in I}(A_i)$, where in composition, commutativity of all triangles formed commute.
+
+$\forall i\in I ~.~ f_i = r;\Pi_i$ in the following diagram:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+  V & \rDashto{s}  & A \times B \\
+  \dTo{f_0}  &\rdTo{f_i \qquad} \ldTo{}{\qquad \Pi_0} &\dTo{}{\Pi_i} \\
+  A_0 & \dots & A_i \\
+\end{diagram}
+& &
+\end{tabular}
+\par
+
+In \textbf{Set}:
+A way to define general product is:
+\begin{flalign*}
+\prod_{i \in I}(A_i) \stackrel{\text{def}}{=} \text{the set of functions $p$ with domain $I$ such that }\forall i \in I ~.~ p_i \in A_i &&
+\end{flalign*}
+Here, the $i^{th}$ projection would be $p \mapsto p~i$, i.e. the $i^{th}$ element of $p$, or applying $p$ to $i$.
+
+\subsection{Generalised sum of sets}
+The \textbf{categorical coproduct} of $(A_i)_{i \in I}$ is given by $\sum_{i \in I} A_i = \{ (i,a) | i \in I \wedge a \in A_i \}$
+
+Hence, the categorical product is a big tuple/function, and the categorical coproduct is a big disjoint-union/sum.
+
+Another notation used for coproducts is $\coprod_{i\in I}(A_i)$
+
+\subsection{Example: product and sum of the empty family}
+
+In \textbf{Set}, the $\Pi$ of the empty family ($ \varnothing \rightarrow A$) is the singleton set, so the set of cardinality of the product is 1.
+
+$\prod_\varnothing = \{f_\varnothing : \varnothing \rightarrow \varnothing \} = \{()\} = 1$
+
+The sum of the empty family is the empty set.
+
+$\sum \varnothing = \varnothing$
+
+\subsection{Common patterns with monoids}
+
+The patterns observed with the product and sum of the empty set are analogous with different monoids.
+
+For instance, for lists:
+\begin{itemize}
+\item $Sum ~[] = 0$     \quad $(\mathbb{N},0,+)$
+\item $Product ~[] = 1$ \quad $(\mathbb{N},1,\times)$
+\item $Max ~[] = 0$     \quad $(\mathbb{N},0,max)$
+\item $Min ~[]$  \quad undefined (infinity if analogous to division by zero, assymptotes, etc.)
+\item $And ~[] = True$  \quad $(\mathbb{B},True,\wedge)$
+\item $Or ~[] = False$  \quad $(\mathbb{B},False,\vee)$
+\end{itemize}
+
+For these monoids, it is a common pattern that vacuous arguments return the identity as a convention. Note that $Min$ is an example of a non-monoid, and thus, can't return the identity, making the function undefined on vacuous arguments.
+
+Thus, if there is a monoid $(M,e,*)$, and we want an n-ary application of $*$ on the elements $M$, the application must end with $e$.
+
+Hence, every n-ary application following a monoidal structure returns the identity by convention.
+
+\end{document}

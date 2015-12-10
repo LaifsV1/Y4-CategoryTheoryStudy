@@ -1,0 +1,16 @@
+*~
+*\#
+.\#*
+*.exe
+*.cmo
+*.cmi
+*.aux
+*.log
+*.bbl
+*.blg
+*.dsc
+auto
+*.el
+*.agdai
+*_region_*
+*.toc

@@ -1,0 +1,558 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\section{Definition 1--Using natural transformations}
+
+Let $\mathcal{C}$ be a category.
+
+A monad on $\mathcal{C}$ consists of:
+\begin{itemize}
+\item a functor $T : \mathcal{C} \rightarrow \mathcal{C}$ (endofunctor)
+\item a natural transformation $\eta$ called the unit:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+\mathcal{C}&\rTo{id} &\mathcal{C}\\
+           &\dImplies{\eta} &\\
+\mathcal{C}&\rTo{T}  &\mathcal{C}
+\end{diagram}
+\end{tabular}
+
+\item a natural transformation $\mu$ called multiplication:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+\mathcal{C}&\rTo{T}&\mathcal{C}&\rTo{T}&\mathcal{C}\\
+           & &\dImplies{\mu}& &\\
+\mathcal{C}& &\rTo{T}&  &\mathcal{C}
+\end{diagram}
+\end{tabular}
+
+\end{itemize}
+
+satisfying three properties:
+
+\begin{itemize}
+\item the right identity law
+
+\begin{tabular}{cccl}
+\begin{diagram}
+T&\rTo{\eta T} &T^2\\
+ &\rdTo{id}    &\dTo{}{\mu}\\
+ &  &T
+\end{diagram}
+\end{tabular}
+
+\item the left identity law
+
+\begin{tabular}{cccl}
+\begin{diagram}
+T&\rTo{T \eta} &T^2\\
+ &\rdTo{id}    &\dTo{}{\mu}\\
+ &  &T
+\end{diagram}
+\end{tabular}
+
+\item the associativity law
+
+\begin{tabular}{cccl}
+\begin{diagram}
+T^3 & \rTo{\mu T} & T^2 \\
+\dTo{T \mu} & & \dTo{}{\mu} \\
+T^2& \rTo{}{\mu} & T
+\end{diagram}
+\end{tabular}
+\end{itemize}
+
+It is similar to a monoid, so the name is not a coincidence:
+\begin{itemize}
+\item set $X$
+\item element $e \in X$
+\item function $* : X^2 \rightarrow X$
+\end{itemize}
+
+Also satisfying three equations:
+\begin{itemize}
+\item $\forall x \in X . x * e = x$
+\item $\forall x \in X . e * x = x$
+\item $\forall x,y,z \in X . (x*y)*z = x*(y*z)$
+\end{itemize}
+
+\section{Definition 2--As a Kleisli triple}
+
+Let $\mathcal{C}$ be a category.
+
+A Kleisli triple on $\mathcal{C}$ consists of:
+\begin{itemize}
+\item for each object $A$, we have an object $TA$ and a morphism $\eta_A : A \rightarrow TA$.
+\item for objects $A,B$ and morphism $f : A \rightarrow TB$, we have a morphism $f* : TA \rightarrow TB$.
+\end{itemize}
+such that the following equations are satisfied:
+\begin{itemize}
+\item left identity law:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+A &\rTo{f} & TB \\
+  &\rdTo(1,2){}{\eta}\ruTo(1,2){}{f*_{A,B}} &  \\
+  & TA      &
+\end{diagram}
+\end{tabular}
+
+analogous to:
+
+$a : A , f : A \rightarrow TB \vdash~ {\tt return ~} a >>= f = f~a$
+
+in Haskell.
+
+\item right identity law: \quad $\eta_B *_{B,B} = id_{TB}$
+
+analogous to:
+
+$p : TB \vdash p >>= \lambda x . {\tt ~return~} x = p : TB$
+
+in Haskell.
+
+\item associativity law:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+TA &\rTo{f*} & TB \\
+  &\rdTo{}{(f;g)*} & \dTo{g*}  \\
+  &  & TC
+\end{diagram}
+\end{tabular}
+
+analogous to:
+
+$p : TA , f : A \rightarrow TB , g : B \rightarrow TC \\
+\vdash (p >>= f) >>= g = p >>= (f >>= g)$
+
+in Haskell.
+
+\end{itemize}
+
+Even though the Kleisli triple makes no mention of naturality, it is equivalent to the previous definition given.
+
+\section{Example: Maybe and Exception monad}
+
+$Maybe~X = X + 1 = \{inl x | x \in X\} \cup \{inr ()\}$
+
+$Exc_E~X = X + E$ where E is a set of behaviours.
+
+The $Exc$ (Exception monad) generalises $Id$ (Identity monad) and $Maybe$ monad:
+\begin{itemize}
+\item $Id$: $E = {} = \varnothing$
+\item $Maybe$: $E = 1 = \{()\}$
+\end{itemize}
+
+In \textbf{Set}, where morphisms are functions, let's check that $Exc_E$ is indeed a monad.
+
+\begin{enumerate}
+
+\item First we map functions to $Exc_E$:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+X       &          & X + E \\
+\dTo{f} & \rMapsto & \dTo \\
+Y       &          & Y + E
+\end{diagram}
+\end{tabular}
+\qquad
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~x   &  & inr~e \\
+\dMapsto&  &\dMapsto\\
+inl~f x &  & inr~e
+\end{diagram}
+\end{tabular}
+
+\item Unit at $X$ (the return) is
+
+\begin{tabular}{cccl}
+\begin{diagram}
+X & \rTo & X + E \\
+x & \rMapsto & inl~x
+\end{diagram}
+\end{tabular}
+
+We can check that this is natural (as in definition 1):
+
+for
+\begin{tabular}{cccl}
+\begin{diagram}
+X       &  & X & \rTo{inl} & X + E \\
+\dTo{f} &  & \dTo{f} &  & \dTo{}{Tf}\\
+Y       &  & Y & \rTo{inl} & Y + E
+\end{diagram}
+\end{tabular}
+
+therefore we have a single case
+
+\begin{tabular}{cccl}
+\begin{diagram}
+x           & \rMapsto{inl} & inl~x \\
+\dMapsto{f} &               & \dMapsto{}{Tf}\\
+f x         & \rMapsto{inl} & inl~f~x
+\end{diagram}
+\end{tabular}
+which does commute
+
+\qquad so
+\begin{tabular}{cccl}
+\begin{diagram}
+X       & \rTo{\eta_X} & TX \\
+\dTo{f} &              & \dTo{}{Tf}\\
+Y       & \rTo{\eta_Y} & TY
+\end{diagram}
+\end{tabular}
+
+\item Multiplication $(T^2 X \xrightarrow{\mu_X} TX)~\mu$ is:
+
+$\mu_X : (X + E) + E \rightarrow X + E$
+
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~inl~x & \rMapsto &inl~x
+\end{diagram}
+\\
+\begin{diagram}
+inl~inr~e & \rMapsto &inr~e
+\end{diagram}
+\\
+\begin{diagram}
+inr~e     & \rMapsto &inr~e
+\end{diagram}
+\end{tabular}
+
+Once again, we can check it is natural:
+
+for
+\begin{tabular}{cccl}
+\begin{diagram}
+X       &        & (X+E)+E & \rTo{ \quad\mu_X \quad} & X + E \\
+\dTo{f} & \qquad\qquad & \dTo{(f + E)+E} &  & \dTo{}{f + E}\\
+Y       &        & (Y+E)+E & \rTo{ \quad\mu_Y \quad} & Y + E
+\end{diagram}
+\end{tabular}
+
+we have to check 3 cases:
+\begin{enumerate}
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~inl~x   & \rMapsto{\mu_x} & inl~x \\
+\dMapsto{f} &                 & \dMapsto{}{f}\\
+inl~inl~fx  & \rMapsto{\mu_x} & inl~fx
+\end{diagram}
+\end{tabular}
+
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~inr~e   & \rMapsto{     } & inr~e \\
+\dMapsto{ } &                 & \dMapsto{}{ }\\
+inl~inr~e   & \rMapsto{     } & inr~e
+\end{diagram}
+\end{tabular}
+
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+    inr~e   & \rMapsto{     } & inr~e \\
+\dMapsto{ } &                 & \dMapsto{}{ }\\
+    inr~e   & \rMapsto{     } & inr~e
+\end{diagram}
+\end{tabular}
+
+\end{enumerate}
+which all commute.
+
+\item Finally, we have to check the three properties:
+
+\begin{enumerate}
+\item left identity law:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+T&\rTo{\eta T} &T^2\\
+ &\rdTo{id}    &\dTo{}{\mu}\\
+ &  &T
+\end{diagram}
+\end{tabular}
+
+i.e. \quad $\forall X \in C$
+\begin{tabular}{cccl}
+\begin{diagram}
+TX&\rTo{(\eta T)_X} &T^2X\\
+ &\rdTo{id_X}    &\dTo{}{\mu}\\
+ &  &TX
+\end{diagram}
+\end{tabular}
+
+This can be defined using left-whiskering:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+B& \rTo{H}&C&\rTo{F}            &D\\
+ &        & &\dImplies{}{\alpha}& \\
+B& \rTo{H}&C&\rTo{G}            &D\\
+\end{diagram}
+\end{tabular}
+therefore
+\begin{tabular}{cccl}
+\begin{diagram}
+ &        &FHX\\
+X&\rMapsto&\dTo{}{\alpha_{HX}}\\
+ &        &GHX\\
+\end{diagram}
+\end{tabular}
+
+$\therefore$
+\begin{tabular}{cccl}
+\begin{diagram}
+TX&\rTo{\eta_{TX}} &T^2X\\
+ &\rdTo{id_X}    &\dTo{}{\mu}\\
+ &  &TX
+\end{diagram}
+\end{tabular}
+
+\item right identity law:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+TX&\rTo{(T\eta)_X} &T^2X\\
+ &\rdTo{id_X}    &\dTo{}{\mu}\\
+ &  &TX
+\end{diagram}
+\end{tabular}
+
+This can be defined using right-whiskering:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+C&\rTo{F}            &D& \rTo{K}&E \\
+ &\dImplies{}{\alpha}& & \\
+C&\rTo{G}            &D& \rTo{K}&E \\
+\end{diagram}
+\end{tabular}
+therefore
+\begin{tabular}{cccl}
+\begin{diagram}
+ &        &KFX\\
+X&\rMapsto&\dTo{}{K \alpha_X}\\
+ &        &KGX\\
+\end{diagram}
+\end{tabular}
+
+$\therefore$
+\begin{tabular}{cccl}
+\begin{diagram}
+TX&\rTo{T\eta_{X}} &T^2X\\
+ &\rdTo{id_X}    &\dTo{}{\mu}\\
+ &  &TX
+\end{diagram}
+\end{tabular}
+
+\item associativity law:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+T^3X& \rTo{\mu_{TX}} & T^2X \\
+\dTo{T \mu_X} & & \dTo{}{\mu_X} \\
+T^2X& \rTo{}{\mu_X} & TX
+\end{diagram}
+\end{tabular}
+\end{enumerate}
+
+Now the actual proof that the properties indeed hold:
+
+\begin{enumerate}
+\item There are two cases to show the left-identity law; $inl~x$ and $inr~e$:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~x&\rMapsto{inl} &inl~inl~x\\
+ &\rdMapsto{id}    &\dMapsto{}{\mu}\\
+ &  &inl~x
+\end{diagram}
+\end{tabular}
+\qquad and \qquad
+\begin{tabular}{cccl}
+\begin{diagram}
+inr~e&\rMapsto{inl} &inl~inr~e\\
+ &\rdMapsto{id}    &\dMapsto{}{\mu}\\
+ &  &inr~e
+\end{diagram}
+\end{tabular}
+
+\item There are two cases to show the right-identity law; $inl~x$ and $inr~e$:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~x&\rMapsto{T~inl} &inl(inr~x)\\
+ &\rdMapsto{id}    &\dMapsto{}{\mu}\\
+ &  &inl~x
+\end{diagram}
+\end{tabular}
+\qquad and\qquad
+\begin{tabular}{cccl}
+\begin{diagram}
+inr~e&\rMapsto{T~inl} &inl(inr~e)\\
+ &\rdMapsto{id}    &\dMapsto{}{\mu}\\
+ &  &inr~e
+\end{diagram}
+\end{tabular}
+
+\item There are four cases to show the associativity law; $inl~inl~inl~x$, $inl~inl~inr~e$, $inl~inr~e$, and $in~e$:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~inl~inl~x & \rTo{\mu_{X+E}} & inl~inl~x \\
+\dTo{\mu_X + E} & & \dTo{}{\mu_X} \\
+inl(inl~x)& \rTo{}{\mu_X} & inl~x
+\end{diagram}
+\end{tabular}
+\qquad \qquad
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~inl~inr~e & \rTo{\mu_{X+E}} & inl~inr~e \\
+\dTo{\mu_X + E} & & \dTo{}{\mu_X} \\
+inl~inl~e& \rTo{}{\mu_X} & inr~e
+\end{diagram}
+\end{tabular}
+
+\begin{tabular}{cccl}
+\begin{diagram}
+inl~inl~e & \rTo{\mu_{X+E}} & inr~e \\
+\dTo{\mu_X + E} & & \dTo{}{\mu_X} \\
+inl~inr~e& \rTo{}{\mu_X} & inr~e
+\end{diagram}
+\end{tabular}
+\qquad \qquad
+\begin{tabular}{cccl}
+\begin{diagram}
+inr~e & \rTo{\mu_{X+E}} & inr~e \\
+\dTo{\mu_X + E} & & \dTo{}{\mu_X} \\
+inr~e& \rTo{}{\mu_X} & inr~e
+\end{diagram}
+\end{tabular}
+\end{enumerate}
+
+With this, we have shown that the properties hold, and that $Exc_E$ is indeed a monad.
+
+\end{enumerate}
+
+\section{Kleisli extension}
+
+Monads are many times implemented using the Kleisli extension. As with Haskell.
+
+$ (-)^* : hom(X,TY) \rightarrow hom(TX,TY)$
+
+Given a monad $<T,\eta,\mu>$ over category $C$ and a morphism $f : X \rightarrow TY$:
+
+$f^* : TX \rightarrow TY\\
+ f^* = \mu_Y \circ Tf$
+
+In other words:
+
+$f : X \rightarrow TY$ is any function that gives us the monad type in Haskell. This also matches $\eta$, which is equivalent to the {\tt return} function.
+
+$f^* : TX \rightarrow TY$ is analogous to the bind function in Haskell. The difference is that arguments are in different order.
+
+For example, if we apply this to the $Exc_E$ monad:
+
+$X \xrightarrow{\quad f\quad } Y + E \\
+ X+E \xrightarrow{\quad f^*\quad } Y + E$
+
+so
+
+$inl~x  \mapsto f~x\\
+ inr~e \mapsto inr~e$
+
+\section{Comparison with Haskell}
+
+Monads can be defined in the standard mathematical way or through the Kleisli triple. We can either have:
+\begin{itemize}
+\item $<T,\eta,\mu>$, where $T$ gives us the type of the monad, $\eta$ is the {\tt return} and $\mu$ is the {\tt join}. Note that $T$ is a functor, so in Haskell, this would be a pair $(T,fmap)$, which maps objects and functions.
+\item $<T,\eta,(-)^*>$, where $T$ gives us the type, again a pair with {\tt fmap}, $\eta$ is the {\tt return}, and $(-)^*$ is equivalent to {\tt bind} (>>=).
+\end{itemize}
+
+This can be seen more clearly with the types:
+
+{\tt join} and $\mu$ (multiplication):
+
+\qquad {\tt join :: T T A -> T A}
+
+\qquad $\mu : T T A \rightarrow T A$
+
+{\tt bind} and $(-)^*$ (Kleisli extension operator):
+
+\qquad {\tt >>= :: T A -> (A -> T B) -> T B}
+
+\qquad $(-)^* : (A \rightarrow T B) \rightarrow (T A \rightarrow T B)$
+
+We can show that a Kleisli triple on $C$ is equivalent to the standard mathematical definition of a monad on $C$ because:
+\begin{itemize}
+\item $\mu$ and $\eta$ give you {\tt >>=}, i.e. $(-)^*$
+\item $(-)^*$ and $\eta$ give you {\tt join}, i.e. $\mu$
+\end{itemize}
+
+\section{Exercise: State monad}
+
+Let $S$ be a set (for some state, i.e. the type of the state/store).
+
+We can define a monad on \textbf{Set} with $T~A = S \rightarrow (S \times A)$
+
+In programming, $T~A$ would be a stateful program that returns a value of type $A$.
+
+For instance, if $A = \mathbb{N}$, then $T~\mathbb{N} = S \rightarrow (S \times \mathbb{N})$.
+
+We could write a program that uses this state:
+
+\qquad $\lambda b : {\tt bool} . ({\tt not}~b,b) : T~{\tt bool}$
+
+This program would take the original state, invert it, and then output the original state.
+
+With that context, we can define the monad either the standard way, or as a Kleisli triple. Defining it as a Kleisli triple:
+
+Let $State$ be the monad:
+\begin{itemize}
+\item $State~X = S \rightarrow (S \times X)$
+\item The Unit ($\eta$)
+
+$\eta : X \rightarrow (S \rightarrow (S \times X))$
+
+$\eta = x \mapsto (s \mapsto (s,x))$ where $s : S$ and $x : X$
+
+\item The Kleisli operator (equivalent to bind):
+
+Given $g : X \rightarrow (S \rightarrow (S \times Y))$
+
+$g^* : (S \rightarrow (S \times X)) \rightarrow (S \rightarrow (S \times Y))$
+
+$g* = f \mapsto s \mapsto (g (\pi_{2}~ f~ s))~ (\pi_{1} ~f~ s)$
+
+\end{itemize}
+
+This is analogous to the Haskell state monad. Given $State$ is analogous to our functor $T$:
+
+{\tt newtype State s a = State { runState :: s -> (a, s) }}
+
+{\tt return :: a -> State s a \\
+return x = State ( \textbackslash s -> (x, s) )}
+
+{\tt (>>=) :: State s a -> (a -> State s b) -> State s b \\
+(State h) >>= f \\
+= State ( \textbackslash s -> let (a,new_sate) = h s in f a new_state )
+}
+
+Alternatively:
+
+{\tt type State s a = s $\rightarrow$ (a,s)\\
+return x = $\lambda$ s $\rightarrow$ (x,s)\\
+f >>= g  ~~= $\lambda$ s $\rightarrow$ \textbf{case} f s \textbf{of} (x,s') $\rightarrow$ g x s' }
+
+
+
+\end{document}

@@ -1,0 +1,421 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\section{More on natural transformations}
+
+\subsection{Natural transformations}
+
+Functors:
+\begin{itemize}
+  \item map objects to objects
+  \item map morphisms to morphisms
+\end{itemize}
+
+Natural transformations map objects to morphisms.
+
+As defined before, a natural transformation $\alpha$ maps each $A \in C$ to a $D$ morphism $\alpha_A : FA \rightarrow GA$ such that for every $C$ morphism $f : A \rightarrow B$ the following square commutes:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+FX            &\rTo{Ff}   &FY\\
+\dTo{\alpha_X}&           &\dTo{}{\alpha_Y}\\
+GX            &\rTo{}{Gf} &GY\\
+\end{diagram}
+\end{tabular}
+
+Hence many theorems use naturality--natural transformations buy us commutative diagrams which ensure everything we build commutes.
+
+\subsection{Composition natural transformations}
+
+The composite of $\alpha$ and $\beta$ maps $A \in C$ to the composite $D$ morphism $FA \xrightarrow{\alpha_A} GA \xrightarrow{\beta_A} HA$ such that it commutes.
+
+i.e.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+C&\rTo{F} &D\\
+ &\dImplies{}{\alpha}&\\
+C&\rTo{}{G} &D\\
+ &\dImplies{}{\beta}&\\
+C&\rTo{}{H} &D\\
+\end{diagram}
+\end{tabular}
+
+Is the composite of natural transformations also natural? We can check:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+FA            &\rTo{Ff}   &FB\\
+\dTo{\alpha_A}&           &\dTo{}{\alpha_B}\\
+GA            &\rTo{}{Gf} &GB\\
+\dTo{\beta_A}&           &\dTo{}{\beta_B}\\
+HA            &\rTo{}{Hf} &HB\\
+\end{diagram}
+\end{tabular}
+
+From the diagram above, we know the composition also commutes:
+
+$\alpha_A ; Gf = Ff ; \alpha_B \\
+ \beta_A ; Hf = Gf ; \beta_B$
+
+$\therefore \alpha_A ; (\beta_A ; Hf) = (\alpha_A ; Gf) ; \beta_B = Ff ; \alpha_B ; \beta_B$
+
+From this, we can check that it is associative.
+
+\subsection{The identity natural transformation}
+
+The identity on $F$ maps $A \in C$ to $FA \xrightarrow{id} FA$.
+
+i.e.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+C&\rTo{F} &D\\
+ &\dImplies{}{id}&\\
+C&\rTo{}{F} &D
+\end{diagram}
+\end{tabular}
+
+Again, we can check this is natural:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+FA            &\rTo{Ff}   &FB\\
+\dTo{id}&\rdTo{Ff}  &\dTo{}{id}\\
+FA            &\rTo{}{Ff} &FB
+\end{diagram}
+\end{tabular}
+
+\subsection{A category of functors and natural transformations}
+
+It appears we can form a functor category from natural transformations $[\mathcal{C},\mathcal{D}]$, provided $\mathcal C$ is small. i.e. objects are functors mapping a category $\mathcal C$ to $\mathcal D$, and morphisms are natural transformations between the functors.
+\begin{itemize}
+\item if both $\mathcal C$ and $\mathcal D$ are small, they form a small category $[\mathcal{C},\mathcal{D}]$;
+\item if $\mathcal D$ is not small, they form a class.
+\end{itemize}
+
+Now we check that this is a valid category:
+
+First, we know there exists an identity, which would be the identity natural transformation seen previously. By definition, the identity composes on the right and left to produce the same morphism it was composed with.
+
+Now, we show \textbf{composition is associative}. We know \textbf{vertical composition} is associative, even if $\mathcal C$ is not small. This is because morphisms are transformations, which, by definition map objects to morphisms.
+
+Thus, vertical composition depends on composition in $\mathcal D$--as $\mathcal C$ only provides objects--meaning it holds by definition for any transformation, even if they were not natural.
+
+i.e. \qquad
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+C&\rTo{F} &D\\
+ &\dImplies{}{\alpha}&\\
+C&\rTo{G} &D \\
+ &\dImplies{}{\beta}&\\
+C&\rTo{H} &D\\
+ &\dImplies{}{\gamma}&\\
+C&\rTo{K} &D
+\end{diagram}
+\end{tabular}
+\qquad such that $(\alpha;\beta);\gamma=\alpha;(\beta;\gamma)$
+
+Given $A \in \mathcal C$, associativity can be expressed with the following commutative diagram:
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+FA                    &\rTo{\alpha_A} &GA\\
+\dTo{[\alpha;\beta]_A}&\ldTo{\beta_A} &\dTo{}{[\beta;\gamma]_A}\\
+HA                    &\rTo{\gamma_A} &KA
+\end{diagram}
+\end{tabular}
+\qquad Which form two commutating triangles, showing composition is associative.
+
+\section{Right whiskered composition}
+
+\begin{tabular}{cccl}
+\begin{diagram}
+C&\rTo{F}            &D& \rTo{H}&E \\
+ &\dImplies{}{\alpha}& & \\
+C&\rTo{G}            &D& \rTo{H}&E \\
+\end{diagram}
+\end{tabular}
+
+Given a natural transformation, we can compose it with a functor to form a \textbf{right whiskered} natural transformation.
+
+Note that this is still a natural transformation. Thus, we want to define a transformation that maps $A \in C$ to an $E$ morphism.
+
+i.e. $HFA \xrightarrow{\quad H\alpha \quad} HGA$ \qquad since \qquad
+\begin{tabular}{cccl}
+\begin{diagram}
+C&\rTo{HF}            &D\\
+ &\dImplies{}{H\alpha}& \\
+C&\rTo{HG}            &D\\
+\end{diagram}
+\end{tabular}
+
+Since this is supposed to be natural, we now check it is:
+
+Given $f : A \rightarrow B$ the following square must commute:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+HFA       &\rTo{\quad H\alpha_A\quad } &HGA\\
+\dTo{HFf} & &\dTo{}{HGf}\\
+HFB       &\rTo{}{\quad H\alpha_B\quad } &HGB
+\end{diagram}
+\end{tabular}
+
+Which we know commutes because $\alpha$ is natural, meaning it buys us the following commuting square:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+FA       &\rTo{\quad \alpha_A\quad } &GA\\
+\dTo{Ff} & &\dTo{}{Gf}\\
+FB       &\rTo{}{\quad \alpha_B\quad } &GB
+\end{diagram}
+\end{tabular}
+
+\subsection{Properties of right whiskering}
+
+Apart from naturality, we must also check that the following properties hold for right whiskered compositions:
+\begin{enumerate}
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+C&\rTo{F}            &D& \rTo{H}&E& \rTo{H'}&E' \\
+ &\dImplies{}{\alpha}& & \\
+C&\rTo{G}            &D& \rTo{H}&E& \rTo{H'}&E' \\
+\end{diagram}
+\end{tabular}
+
+\qquad$H'(H\alpha) = (H;H')\alpha$
+
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+C&\rTo{F}            &D& \rTo{I}&D \\
+ &\dImplies{}{\alpha}& & \\
+C&\rTo{G}            &D& \rTo{I}&D \\
+\end{diagram}
+\end{tabular}
+
+\qquad$I_D \alpha = \alpha$
+
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+C&\rTo{F}            &D& \rTo{K}&E \\
+ &\dImplies{}{\alpha}& & \\
+C&\rTo{G}            &D& \rTo{K}&E \\
+ &\dImplies{}{\beta} & & \\
+C&\rTo{H}            &D& \rTo{K}&E \\
+\end{diagram}
+\end{tabular}
+
+\qquad$K(\alpha;\beta)=(K\alpha)\beta$
+
+
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+C&\rTo{F}&D& \rTo{G}&E \\
+\end{diagram}
+\end{tabular}
+
+\qquad$G~id_F = id_{GF}$
+
+\end{enumerate}
+
+\section{Left whiskered composition}
+
+\begin{tabular}{cccl}
+\begin{diagram}
+B& \rTo{H}&C&\rTo{F}            &D\\
+ &        & &\dImplies{}{\alpha}& \\
+B& \rTo{H}&C&\rTo{G}            &D\\
+\end{diagram}
+\end{tabular}
+
+We define the \textbf{left whiskered} natural transformation $\alpha H$ which maps each $X \in B$ to the $D$ morphism
+
+$FHX \xrightarrow{\quad \alpha_{HX}\quad} GHX$
+
+i.e.
+\begin{tabular}{cccl}
+\begin{diagram}
+B&\rTo{FH}             &D\\
+ &\dImplies{}{\alpha H}& \\
+B&\rTo{GH}             &D\\
+\end{diagram}
+\end{tabular}
+
+And again, we check this really is natural:
+
+Given morphism $g \in B$ with type $g : X \rightarrow Y$ the following square must commute:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+FHX       &\rTo{\quad \alpha_{HX}\quad } &GHX\\
+\dTo{FHg} & &\dTo{}{GHf}\\
+FHY       &\rTo{}{\quad \alpha_{HY}\quad } &GHY
+\end{diagram}
+\end{tabular}
+
+which we know commutes because $\alpha$ is natural at $Hg$.
+
+Note that although $\alpha$ being a natural transformation  means $\alpha H$ is too, $\alpha$ does not need to be natural for $\alpha H$ to be.
+
+We also have to check the equivalent right whiskering properties $1,2,3,4$ mentioned for left whiskering.
+
+
+\section{More properties of whiskered compositions}
+
+\begin{itemize}
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+B& \rTo{H}&C&\rTo{F}            &D&\rTo{K}&E\\
+ &        & &\dImplies{}{\alpha}& \\
+B& \rTo{H}&C&\rTo{G}            &D&\rTo{K}&E\\
+\end{diagram}
+\end{tabular}
+
+i.e. left and right whiskered compositions
+\qquad $(K\alpha)H = K(\alpha H)$
+
+\item
+\begin{tabular}{cccl}
+\begin{diagram}
+B&\rTo{F}            &C&\rTo{H}&D\\
+ &\dImplies{}{\alpha}& &\dImplies{}{\beta}\\
+B&\rTo{G}            &C&\rTo{K}&D\\
+\end{diagram}
+\end{tabular}
+
+i.e. the horizontal composites \quad
+\begin{tabular}{cccl}
+\begin{diagram}
+B&\rTo{HF}             &D\\
+ &\dImplies{}{\beta F} & \\
+B&\rTo{KF}             &D\\
+ &\dImplies{}{K \alpha}& \\
+B&\rTo{KG}             &D\\
+\end{diagram}
+\end{tabular}
+\quad and \quad
+\begin{tabular}{cccl}
+\begin{diagram}
+B&\rTo{HF}             &D\\
+ &\dImplies{}{H \alpha} & \\
+B&\rTo{HG}             &D\\
+ &\dImplies{}{\beta K}& \\
+B&\rTo{KG}             &D\\
+\end{diagram}
+\end{tabular}
+\quad are equal.
+
+We can also say:
+
+\begin{tabular}{cccl}
+\begin{diagram}
+HF&\rTo{\beta F} &KF\\
+\dTo{H \alpha}&& \dTo{K \alpha}\\
+HG&\rTo{\beta K} &KG\\
+\end{diagram}
+\end{tabular}
+commutes in $[B,D]$
+
+\end{itemize}
+
+\subsection{Exercise}
+
+As mentioned before, $\alpha$ being natural ensures $\alpha H$ is natural. However, given an unnatural $\alpha$, we can still have a natural $\alpha H$.
+
+To prove this, we first define an unnatural transformation $\alpha$ to show that it exists.
+
+i.e.
+
+$\exists X,Y \in C, f : X \rightarrow Y$
+
+where the following diagram
+
+\begin{tabular}{cccl}
+\begin{diagram}
+FX&\rTo{\alpha} &GX\\
+\dTo{Ff \alpha}&& \dTo{}{Gf}\\
+FY&\rTo{\alpha} &GY\\
+\end{diagram}
+\end{tabular}
+
+does not commute;  $Gf \alpha \neq Ff \alpha$.
+
+First, we define category $D$ with ~$ob D = \{a,b,c,d\}$~ where
+$\\~FX = a \\
+ ~FY = b \\
+ ~GX = c \\
+ ~GY = d
+$
+
+For this category, we need at least 10 morphisms to have an unnatural transformation. So we have:
+
+\begin{itemize}
+\item $a \xrightarrow{f} b$
+\item $a \xrightarrow{g} c$
+\item $b \xrightarrow{h} d$
+\item $e \xrightarrow{i} d$
+\item $a \xrightarrow{id_a} a$
+\item $b \xrightarrow{id_b} b$
+\item $c \xrightarrow{id_c} c$
+\item $d \xrightarrow{id_d} d$
+\item $q = f ; h : a \rightarrow b \rightarrow d$
+\item $p = g ; i : a \rightarrow c \rightarrow d$
+\end{itemize}
+
+where $q$ and $p$ are not equal.
+
+This is a valid category because all objects have identity morphisms, and composition is well defined.
+
+Secondly, we define category $C$, with 2 objects $ob C = \{X,Y\}$ and 3 morphisms:
+
+\begin{itemize}
+\item $X \xrightarrow{s} Y$
+\item $X \xrightarrow{id_X} X$
+\item $Y \xrightarrow{id_Y} Y$
+\end{itemize}
+
+Now we can define functors $F$ and $G$:
+
+$F$:
+\begin{itemize}
+\item $X \mapsto a$
+\item $Y \mapsto c$
+\item $s \mapsto g$
+\item $id_X \mapsto id_a$
+\item $id_Y \mapsto id_c$
+\end{itemize}
+
+$G$:
+\begin{itemize}
+\item $X \mapsto b$
+\item $Y \mapsto d$
+\item $s \mapsto h$
+\item $id_X \mapsto id_b$
+\item $id_Y \mapsto id_d$
+\end{itemize}
+
+Finally, we can define an unnatural $\alpha$:
+\begin{itemize}
+\item $X \mapsto f$
+\item $Y \mapsto i$
+\end{itemize}
+
+Now that $\alpha$ is defined--and we know such a transformation does indeed exist--we want to show $\alpha H$ can be natural. So we need a category $B$ such that:
+
+$\forall x,y \in B , x \xrightarrow{w} y .$
+
+\begin{tabular}{cccl}
+\begin{diagram}
+FHx&\rTo{\alpha Hx} &GHx\\
+\dTo{FHw \alpha}&& \dTo{}{GHw}\\
+FHy&\rTo{\alpha Hy} &GHy\\
+\end{diagram}
+\end{tabular}
+
+This is trivially true because universal quantifiers hold for vacuously true cases, i.e. if $B$ is empty. Although there could be--and certainly are--more examples, just one case is enough to show that $\alpha H$ can be natural, even if $\alpha$ is not.
+\end{document}

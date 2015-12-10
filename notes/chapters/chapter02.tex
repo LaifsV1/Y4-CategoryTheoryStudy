@@ -1,0 +1,218 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Proving simple properties}
+
+Simply defining a category is not enough. We must prove that the definitions said category hold.
+
+\subsection{Example 1: composition of group homomorphisms}
+
+Given: $(G,\bullet),(G',\bullet'),(G'',\bullet'')$ and $G \xrightarrow[]{f} G' \xrightarrow[]{g} G''$ \par
+Prove: $\forall a,b \in G ~.~ (g \circ f) (a \bullet b) \stackrel{?}{=}  (g \circ f) a \bullet (g \circ f) b$
+\begin{flalign*}
+    ~~~~(g \circ f) (a \bullet b) &= g(f(a \bullet b))\\
+    &= g(f(a) \bullet' f(b))) \\
+    &= g(f(a)) \bullet'' g(f(b)) \\
+    &= (g \circ f) a \bullet'' (g \circ f) b&
+\end{flalign*}
+
+\subsection{Example 2: associativity of matrix multiplication}
+
+Given: $m \xrightarrow[]{A} n \xrightarrow[]{B} p \xrightarrow[]{C} l$ and $A \xrightarrow[]{R} B \xrightarrow[]{S} C \xrightarrow[]{T} D$\par
+Prove: $(R;S);T \stackrel{?}{=} R;(S;T)$ \par
+
+(a note on notation: $(matrix_{row}^{col} \ \mid \ \substack{row < m \\ col < n})$)
+
+We know $(a_i^j ~\mid~ \substack{i < m \\ j < n}) ~ (b_j^k  ~\mid~  \substack{j < n \\ k < p}) = (\sum\limits_{j<n} {a_i^j b_j^k} \ \mid \ \substack{i < m \\ k < p} )$
+
+For any row $i$ and column $j$, the $(i,j)$th entry of $(R;S);T$ is:
+\begin{flalign*}
+    ~~~~(R;S);T &= (\sum_{j<n} {a_i^j b_j^k}) (T)\\
+    &= \sum_{k<p} (\sum_{j<n} {a_i^j b_j^k}) (c_k^q) \\
+    &= \sum_{k<p}\sum_{j<n} {a_i^j b_j^k c_k^q} \\
+    &= \dots ~~~\text{(form is symmetrical at this point)}&
+\end{flalign*}
+
+\section{The category which is the product of two categories}
+
+The category the product of categories $C \times D$ consists of:
+\begin{itemize}
+  \item An object $(X,Y)$ such that $X \in C , Y \in D$
+  \item The morphism $(X,Y) \rightarrow (W,Z) = (f,g)$ where \par
+        $f : X \rightarrow W \in C$ \par
+        $g : Y \rightarrow Z \in D$
+  \item The identity morphism $id_{(X,Y)} = (id_X , id_Y )$
+  \item The composite $(X,Y) \xrightarrow{(f,g)} (W,Z) \xrightarrow{(h,k)} (U,V) = (f ; k , g ; k)$
+\end{itemize}
+
+\section{The opposite (dual) category}
+
+The dual category of $C$ is $C^{op}$, and consists of:
+\begin{itemize}
+  \item All objects $X \in C$
+  \item Morphisms $X \rightarrow Y \in C^{op}$ are morphisms
+        $Y \rightarrow X \in C$
+  \item The identity morphism $id_{X} : X \rightarrow X \in C^{op}$ is the morphism $id_{X} \in C$
+  \item Compositions $X \underset{X,Y,Z}{;} Z \in C^{op}$ are compositions $Z \underset{Z,Y,X}{;} X \in C$
+\end{itemize}
+
+\section{Isomorphisms}
+
+\subsection{The inverse morphism}
+
+The inverse of $f : A \rightarrow B$ is $g : B \rightarrow A$ such that: \par
+\begin{tabular}{cccl}
+f ; g = id_A & ~~~{\rm and}~~~  & g ; f = id_B &\\
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+A & \rTo{f}{}     & B         \\
+  & \rdTo{}{id_A} & \dTo{}{g} \\
+  &               & A
+\end{diagram}
+& &
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+B & \rTo{g}{}     & A         \\
+  & \rdTo{}{id_B} & \dTo{}{f} \\
+  &               & B
+\end{diagram}
+\end{tabular}
+\par
+
+\textbf{(Theorem)} ~~~ if $f$ has inverses $g$ and $g'$, then $g = g'$
+
+\subsection{Isomorphisms}
+
+An isomorphism is a morphism with an inverse. If $f$ is an isomorphism, then $f : A \cong B$ \par
+
+For example:
+\begin{itemize}
+  \item In \textbf{Set}, all bijections are isomorphisms
+  \item In \textbf{Mat}, all non-singular matrices are isomorphisms
+  \item In the category of towns, all identities $id_X$ are isomorphisms, but no other morphism is an isomorphism. This is because identity routes are single item lists, and composing two routes (concatenating routes) can never be done in a way such that the length of the resulting route decreases. i.e. there are no inverses.
+
+    Given we need a composition that results in a route of length 1, no morphism other than single town routes (identity routes) will do.
+
+\end{itemize}
+
+\section{Initial and terminal objects}
+
+An object $X \in C$ is \textbf{initial} when for all $Y \in C$ there is a unique function $X \rightarrow Y$. i.e. $\forall Y \in C ~.~ \exists ! f : X \rightarrow Y$ \par
+
+An object $X \in C$ is \textbf{terminal} when for all $Y \in C$ there is a unique function $Y \rightarrow X$. i.e. $\forall Y \in C ~.~ \exists ! f : Y \rightarrow X$ \par
+
+For example, in \textbf{Set}:
+\begin{itemize}
+  \item There is exactly one initial object, which is the \textbf{empty set}. This is because there is only one function from the empty set to any other set, the \textbf{empty function}, $f_A : \varnothing \rightarrow A$.
+  \item Every singleton set is a terminal object. This is because there is a unique function $f_1 : A \rightarrow 1$ where $1 = {()}$ for any set $A$. We know this because there is only a single item in $1$ which elements in any set can map to.
+\end{itemize}
+
+Note that there can be a function with an \textbf{empty domain}, but there cannot be a function with \textbf{non-empty domain} and \textbf{empty co-domain} since there wouldn't be anything to map to from the domain. The standard set-theoretic way to define functions explains this:
+\begin{enumerate}
+  \item \textbf{Cartesian product} : $A \times B = \{(a,b) ~\mid~ a \in A, b \in B\}$ \par
+        The product is a set of ordered pairs.
+  \item \textbf{Relation} : $R \subset A \times B$ where $R$ is a relation between sets $A$ and $B$, often written as $a \mathop R b$
+  \item \textbf{Function} : $f : A \rightarrow B$ is a relation such that:
+    \begin{itemize}
+      \item \textbf{there exist images} : $\forall a \in A ~.~ \exists b \in B ~.~ (a,b) \in f$ \par
+            This is different to \textbf{surjectivity}, which states that everything in $B$ is an image. This condition requires the existence of images. Surjectivity is vacously true for empty sets.
+      \item \textbf{images are unique} : $\forall a \in A ~.~ (a,b) \in f \wedge (a,b') \in f \Rightarrow b = b'$.
+    \end{itemize}
+\end{enumerate}
+
+Since the only subset of $\varnothing$ is $\varnothing$, the only relation between $A$ and $B$ (where one of them is $\varnothing$) is $\varnothing$. Thus, the question is whether the empty relation ($\varnothing$) is a function from $A$ to $B$:
+\begin{itemize}
+  \item $A \neq \varnothing$ : no, since there exists an $a \in A$ but no $b \in B$ such that $(a,b) \in \varnothing$, the image existence condition is not matched.
+  \item $A = \varnothing$ : yes, both existence and uniqueness conditions are vacuously true. i.e. there is no $a \in A$ to disprove the universals.
+\end{itemize}
+Note that the conditions state that functions must define a unique output (image) for every input (preimage). This is vacuously true on the input, since there is no input. \par
+Also note that in many languages (such as Java, C, OCaml) there might not be function definition for the signature $\varnothing \rightarrow T$. A program without input is a function from the unit set ($1 = \{()\}$). Therefore, function $f : \varnothing \rightarrow T$ cannot be defined, but is still a function.
+
+\section{Exercises}
+
+\subsection{Theorem : every inverse morphism is unique}
+
+If $g,g' : D \rightarrow C$ are two inverses for $f : C \rightarrow D$, then $g = g'$ \par
+i.e. \quad $(g \circ f = id_C \wedge f \circ g = id_D) \wedge (g' \circ f = id_C \wedge f \circ g' = id_D) \Rightarrow g = g'$ \par
+Proof:
+\begin{flalign*}
+\quad g &= id_C \circ g & \\
+        &= (g' \circ f) \circ g & \\
+        &= g' \circ (f \circ g) & \\
+        &= g' \circ id_D & \\
+        &= g'
+\end{flalign*}
+Alternatively:
+\begin{flalign*}
+\quad g &= g ; id_C & \\
+        &= g ; (f ; g') & \\
+        &= (g ; f) ; g' & \\
+        &= id_D ; g' & \\
+        &= g'
+\end{flalign*}
+
+\subsection{Theorem: initial objects have unique isomorphisms between them}
+
+If $X,X' \in C$ are initial, there is a unique isomorphism $X \cong X'$
+
+Proof: \qquad Given $f : X \rightarrow X'$ and $g : X' \rightarrow X$
+\begin{flalign*}
+\quad X \xrightarrow{\quad f\quad} X' \qquad &\text{is a unique morphism because $X$ is initial} &&\\
+      X' \xrightarrow{\quad g\quad} X \qquad &\text{is a unique morphism because $X'$ is initial} &&\\
+      X \xrightarrow{\quad g \circ f\quad} X \qquad &\text{is unique because $X$ is initial, so any morphism from $X$ is unique} &&\\
+      f ; g = id_X \qquad &\text{because identity on $X$ must exist, and $f ; g$ is unique} &&\\
+      g ; f = id_{X'} \qquad &\text{because identity on $X'$ must exist, and $g ; f$ is unique} &&\\
+      &\therefore \text{$g$ and $f$ are inverses} \\
+      &\therefore \text{$X \cong X'$ is a unique isomorphism since $f$ and $g$ are unique} \\
+      &\therefore \text{$X$ and $X'$ are \textbf{unique up to isomorphism}.} \\
+\text{i.e.}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+X & \rTo{f}{}     & X'         &               &  \\
+  & \rdTo{}{id_X} & \dTo{}{g}  & \rdTo{}{id_{X'}} &  \\
+  &               & X          & \rTo{f}{}     & X'
+\end{diagram} \qquad &\text{each morphism is unique, meaning $f ; g = id_{X}$} &&\\
+\end{flalign*}
+If objects are \textbf{unique up to isomorphism}, they are the same object with different names for things. More formally, all the objects satisfying a given definition are isomorphic.
+
+\subsection{Theorem: terminal objects have unique isomorphisms between them}
+
+If $X,X' \in C$ are terminal, there is a unique isomorphism $X \cong X'$ \par
+The proof would have the same structure as the equivalent theorem for initial objects. Only difference would be that the unique morphisms defined are the other way round.
+
+\subsection{Initial and terminal objects in the category of groups, Grp}
+
+\textbf{(Initial object)} \par
+The trivial group $(1,*) = \{e\}$ (group consisting of only the identity element) is an initial object of \textbf{Grp}. \par
+
+First prove $\forall G \in \textbf{Grp} ~.~ \exists ! ~1 \rightarrow G$:\par
+~~Given group $(G,\bullet)$ with identity $e_G$, we can define a function $f$
+\begin{flalign*}
+\quad f(e) = e_G \qquad & \text{because all group homomorphisms preserve identity}&\\
+      \forall G \in \textbf{Grp} ~.~ \exists ! ~1 \rightarrow G \qquad &\text{because the morphism defined by $f$ that maps $e$ to $e_G$ is unique}
+\end{flalign*}
+
+Then prove $\forall G \in \textbf{Grp} ~.~ 1 \rightarrow G$ is a valid morphism:\par
+Show that $f(a) \bullet f(b) = f(a * b)$ \par
+\begin{tabular}{>{$}l<{$} >{$}l<{$}  >{$}l<{$} }
+f(e) \bullet f(e) &= e_G \bullet e_G &\text{by definition of $f$} \\
+ ~                &= e_G             &\text{by definition of the identity element} \\
+                  &= f(e)            & \\
+                  &= f(e * e)        & \\
+
+\end{tabular}
+\par
+\textbf{(Terminal object)}\par
+The trivial group $(1,*)$ is also a terminal object in \textbf{Grp}.\par
+
+First, by same argument that makes $1$ initial, we show that $\forall G \in \textbf{Grp} ~.~ \exists ! ~G \rightarrow 1$. The mapping is defined by\par
+\qquad $\forall g \in G ~.~ f(g) = e$\par
+
+Then, we verify that $G \rightarrow 1$ is a valid group homomorphism:\par
+Show that $\forall a,b \in G ~.~ f(a)*f(b) = f(a \bullet b)$:\par
+~~Given $a \bullet b = c$ \par
+\begin{tabular}{>{$}l<{$} >{$}l<{$}  >{$}l<{$} }
+f(a) * f(b) &= e * e &\text{by definition of $f$} \\
+ ~          &= e     &\text{by definition of the identity element and $*$} \\
+            &= f(c)  &\text{by definition of $f$, we know $f(c) = e$} \\
+            &= f(a \bullet b)  &\text{because $a \bullet b = c$} \\
+\end{tabular}
+
+\end{document}

@@ -1,0 +1,288 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Small categories}
+
+To define a small category, we will need the following definition:
+
+\qquad
+\begin{tabular}{lll}
+  \tabitem Ob  &: Set &Set of all objects \\
+  \tabitem Hom &: Ob  $\rightarrow$ Ob  $\rightarrow$ Set &Set of all morphisms\\
+  \tabitem id  &:  $\forall$ X : Ob .Hom X X &Identity morphism\\
+  \tabitem _;_ &:  $\forall$ X, Y, Z : Ob .\\
+               &\quad Hom X Y $\rightarrow$ Hom Y Z $\rightarrow$ Hom X Z  &Composition of morphisms\\
+\end{tabular}
+
+and the following laws:
+
+\qquad
+\begin{tabular}{lll}
+  \tabitem left-identity law\\
+  \tabitem right-identity law\\
+  \tabitem associativity law\\
+\end{tabular}
+
+This can be implemented in Agda:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+record Cat : Set$_1$ where
+  field Ob  : Set
+        Hom : Ob $\rightarrow$ Ob $\rightarrow$ Set
+        id  : {X : Ob} $\rightarrow$ Hom X X
+        _$\blacktriangleright$_ : {X Y Z : Ob} $\rightarrow$ Hom X Y $\rightarrow$ Hom Y Z $\rightarrow$ Hom X Z
+
+        left_id  : {X Y : Ob} {f : Hom X Y} $\rightarrow$ id $\blacktriangleright$ f $\equiv$ f
+        right_id : {X Y : Ob} {f : Hom X Y} $\rightarrow$ f $\blacktriangleright$ id $\equiv$ f
+        assoc    : {W X Y Z : Ob}
+                   {f : Hom W X}
+                   {g : Hom X Y}
+                   {h : Hom Y Z} $\rightarrow$ f $\blacktriangleright$ (g $\blacktriangleright$ h) $\equiv$ (f $\blacktriangleright$ g) $\blacktriangleright$ h
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+With this, an instance of any small category can be made.
+
+For instance, the category of endofunctions on Booleans.
+
+This category is one which rises from a monoid, so we use the same definition previously seen to make this category in Agda.
+
+First, we define the data types:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+data Bool : Set where
+  true  : Bool
+  false : Bool
+
+data Unit : Set where
+  unit : Unit
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+Unit is the singleton set I will be using as the objects of the category of endofunctions on Booleans. Bool is the set of Booleans which I will be using to define all endofunctions.
+
+With this in place, we can define the category:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+set$\mathbb{B}$ : Cat
+set$\mathbb{B}$ = record
+        { Ob  = Unit
+        ; Hom = $\lambda$ unit unit $\rightarrow$ Bool $\rightarrow$ Bool
+        ; id  = $\lambda$ b $\rightarrow$ b
+        ; _$\blacktriangleright$_ = $\lambda$ f g  $\rightarrow$ $\lambda$ x $\rightarrow$ g (f x)
+        ; left_id  = refl
+        ; right_id = refl
+        ; assoc    = refl
+        }
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+\section{\textbf{Set} in Agda}
+
+With the previous definition, we were unable to define \textbf{Set}, however. To do this, we must define a universe level polymorphic record.
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+record Category {l : Level} : Set (lsuc l) where
+  field Ob  : Set l
+        Hom : Ob $\rightarrow$ Ob $\rightarrow$ Set i
+        id  : {X : Ob} $\rightarrow$ Hom X X
+        _$\blacktriangleright$_ : {X Y Z : Ob} $\rightarrow$ Hom X Y $\rightarrow$ Hom Y Z $\rightarrow$ Hom X Z
+
+        left_id  : {X Y : Ob} {f : Hom X Y} $\rightarrow$ id $\blacktriangleright$ f $\equiv$ f
+        right_id : {X Y : Ob} {f : Hom X Y} $\rightarrow$ f $\blacktriangleright$ id $\equiv$ f
+        assoc    : {W X Y Z : Ob}
+                   {f : Hom W X}
+                   {g : Hom X Y}
+                   {h : Hom Y Z} $\rightarrow$ f $\blacktriangleright$ (g $\blacktriangleright$ h) $\equiv$ (f $\blacktriangleright$ g) $\blacktriangleright$ h
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+With this definition, we can finally define \textbf{Set}:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+set : Category
+set = record
+        { Ob  = Set
+        ; Hom = $\lambda$ X Y $\rightarrow$ Set $\rightarrow$ Set
+        ; id  = $\lambda$ X $\rightarrow$ X
+        ; _$\blacktriangleright$_ = $\lambda$ {X Y Z : Set} f g  $\rightarrow$ $\lambda$ x $\rightarrow$ g (f x)
+        ; left_id  = refl
+        ; right_id = refl
+        ; assoc    = refl
+        }
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+\section{Defining monads}
+
+It is possible to define a monad in the traditional way:
+
+\qquad
+\begin{tabular}{lll}
+  \tabitem T  & &an endofunctor on $C$ \\
+  \tabitem $\eta$ & &a unit natural transformation\\
+  \tabitem id  $\mu$ & &a multiplication natural transformation\\
+\end{tabular}
+
+The downside is that it would also require the definition of a functor and all the proves associated. Alternatively, a monad can also be defined as a Kleisli Triple:
+
+\qquad
+\begin{tabular}{lll}
+  \tabitem T  &: Ob C $\to$ Ob C &a morphism in C\\
+  \tabitem $\eta$ &: {X : Ob C} $\to$ Hom$_C$(X,T X)&a unit transformation\\
+  \tabitem $(\_)^*$ &: {X Y : Ob C} $\to$ Hom$_C$(X,T Y) $\to$ Hom$_C$(T X, T Y)&the Kleisli operator\\
+\end{tabular}
+
+This is easier to implement since no definition of a functor is required, and no mention of naturality is given either. Hence I implemented monads as a Kleisli triple.
+
+Given the following projections:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+Ob      = Category.Ob
+Hom     = Category.Hom
+id      = Category.id
+compose = Category._$\blacktriangleright$_
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+The definition of a Kleisli Triple is given as follows:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+record Monad {l : Level}{C : Category {l}} : Set (lsuc l) where
+  field T  : Ob C $\to$ Ob C
+        $\eta$   : {X : Ob C} $\to$ Hom C X (T X)
+        _* : {X Y : Ob C} $\to$ Hom C X (T Y) $\to$ Hom C (T X) (T Y)
+
+        monad_lid   : {X Y : Ob C}
+                      {f : Hom C X (T Y)} $\to$
+                      compose C $\eta$ (f *) $\equiv$ f
+        monad_rid   : {X : Ob C} $\to$
+                      ($\eta$ {X})* $\equiv$ id C {T X}
+        monad_assoc : {X Y Z : Ob C}
+                      {f : Hom C X (T Y)}
+                      {g : Hom C Y (T Z)} $\to$
+                      compose C (f *) (g *) $\equiv$ (compose C f (g *)) *
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+\section{State monad}
+
+Now that monads are defined, it is possible to check the answer to the exercise at the end of the last chapter. We can show---in Agda---that the state monad defined previously is indeed a valid monad.
+
+First, we need products defined:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+data _$\times$_ (A B : Set) : Set where
+  _,_ : A $\rightarrow$ B $\rightarrow$ A $\times$ B
+
+$\pi_1$ : {A B : Set} $\rightarrow$ (A $\times$ B) $\rightarrow$ A
+$\pi_1$ (a , b) = a
+
+$\pi_2$ : {A B : Set} $\rightarrow$ (A $\times$ B) $\rightarrow$ B
+$\pi_2$ (a , b) = b
+
+$\pi$id : {A B : Set}{p : A $\times$ B} $\rightarrow$ $\pi_1$ p , $\pi_2$ p $\equiv$ p
+$\pi$id {A}{B}{a , b} = refl
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+Assuming function extensionality:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+postulate exten : {X Y : Set}{f g : X $\rightarrow$ Y} $\rightarrow$
+                  ((x : X) $\rightarrow$ f x $\equiv$ g x) $\rightarrow$ (f $\equiv$ g)
+
+exten2 : {X Y Z : Set}{f g : X $\rightarrow$ Y $\rightarrow$ Z} $\rightarrow$
+         ((x : X)(y : Y) $\rightarrow$ f x y $\equiv$ g x y) $\rightarrow$ (f $\equiv$ g)
+exten2 h = exten ($\lambda$ x $\rightarrow$ exten(h x))
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+We can now define the state monad---on \textbf{Set}---and prove its laws:
+
+\begin{tabular}{lll}
+\toprule
+{\tt
+\begin{lstlisting}[mathescape]
+state : Set $\to$ Monad {lsuc lzero}{set}
+state S = record
+          { T  = $\lambda$ A $\to$ S $\to$ (S $\times$ A)
+          ; $\eta$  = $\lambda$ a $\to$ $\lambda$ s $\to$ (s , a)
+          ; _* = $\lambda$ g f $\to$ $\lambda$ s $\to$ g ($\pi_2$ (f s)) ($\pi_1$ (f s))
+          ; monad_lid   = refl
+          ; monad_rid   = lemma_rid
+          ; monad_assoc = refl
+          }
+          where
+            lemma_rid : {A : Ob set} $\to$
+                        ($\lambda$f s $\to$ $\pi_1$ (f s) , $\pi_2$ (f s))
+                        $\equiv$ id set {S $\to$ (S $\times$ A)}
+            lemma_rid {A} =
+              begin
+                ($\lambda$ f s $\to$ $\pi_1$ (f s) , $\pi_2$ (f s))
+                $\equiv$$\langle$ exten2 ($\lambda$ f s $\to$ $\pi$id {p = f s}) $\rangle$
+                ($\lambda$ f s $\to$ f s)
+                $\equiv$$\langle$ refl $\rangle$
+                ($\lambda$ f $\to$ f)
+              $\blacksquare$
+\end{lstlisting}
+}
+\\
+\bottomrule
+\end{tabular}
+
+\end{document}

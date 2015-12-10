@@ -1,0 +1,353 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Morphism with no inverse in the category of posets and monotone functions}
+
+Unlike \textbf{Set}, where bijections are isomorphisms, in the category of \textbf{posets and monotone functions}, not every bijection is an isomorphism.
+
+For instance, given the following sets:\par
+$A = \{1,2\}$ where $A$ is discrete \par
+$B = \{1,2\}$ where $1 \leq 2$ \par
+$A \rightarrow B$ could map $2_A \mapsto 1_B$ and $1_A \mapsto 2_B$, which is valid because elements in $A$ are disconnected. \par
+$B \rightarrow A$ would not be able to map $1_B \mapsto 2_A$ and $2_B \mapsto 1_A$ (in reverse) and keep order because $2_A \nleq 1_A$
+
+\section{Initial and terminal objects for the category of posets and monotone functions}
+
+\textbf{(Initial object)} \par
+
+When we regard a \textbf{poset} as a category, then the initial object is the \textbf{smallest element}, if it exists. This is because there is a single morphism between the smallest object and any other object; the smallest object is always smaller than any other object.
+
+In the \textbf{category of posets}, however, we have to consider the poset for which there is a unique monotone function between it and every other object.\par
+
+Analogous to \textbf{Set}, this would be the \textbf{empty poset} $(\varnothing , \varnothing)$, which is discrete, indiscrete, and has no relations (is a flat poset). \par
+
+\textbf{(Terminal object)} \par
+
+When we regard a \textbf{poset} as a category, then the terminal object is the \textbf{largest element}, if it exists. This is because there is a single morphism from any object to the largest object; the largest object is always larger than any other object.
+
+In the \textbf{category of posets}, analogous to \textbf{Set}, this would be the \textbf{singleton equality poset} $(1 , =)$. \par
+
+\section{Functors}
+
+A functor $F : \mathcal{C} \rightarrow \mathcal{D}$ is a function that maps between categories $\mathcal{C}$ and $\mathcal{D}$ by mapping all definitions from $\mathcal{C}$ to $\mathcal{D}$ such that:
+\begin{enumerate}
+  \item all objects in $\mathcal{C}$ are mapped to all objects in $\mathcal{D}$ by $F$ \par
+    $\textit{ob}\mathcal{C} \xrightarrow{\quad F\quad } \textit{ob}\mathcal{D}$ \qquad
+    i.e. $X \in \mathcal{C}$ then $F(X) \in \mathcal{D}$
+  \item all morphisms in $\mathcal{C}$ are mapped to a morphism in $\mathcal{D}$\par
+$\forall A,B \in \mathcal{C} \wedge f : A \rightarrow B ~.~ FA \xrightarrow{\quad F_{A,B} f \quad} FB $
+  \item the identity morphisms are also mapped and maintained \par
+    $\forall A \in \mathcal{C} ~.~ Fid_A = id_{FA}$\par
+  \item composition is also mapped and maintained \par
+    $\forall A,B,C \in \mathcal{C} \wedge A \xrightarrow{\quad f \quad} B \xrightarrow{\quad g \quad} C ~.~ F(f\underset{A,B}{;}g) = Ff\underset{FA,FB}{;}Fg$ \par
+\begin{flalign*}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+FA & \rTo{F(f;g)}{}     & FC       \\
+  & \rdTo{}{Ff} & \uTo{}{Fg} \\
+  &               & FB
+\end{diagram} &&
+\end{flalign*}
+\end{enumerate}
+Functors can also be thought of as homomorphisms between categories.
+
+\section{More categories}
+
+\subsection{Monoids}
+Any monoid $(M,e,\bullet)$ gives rise to a category $\tilde{M}$ if:
+\begin{itemize}
+  \item $\textit{ob}\tilde{M} ~\stackrel{\text{def}}{=}~ 1$ \qquad where $1$ is any singleton set. e.g. the unit set $\{()\}$
+  \item $\tilde{M}( (), () ) ~\stackrel{\text{def}}{=}~ M$ \qquad morphisms in $() \rightarrow () \in \tilde{M}$ are the elements of $M$
+  \item $id_{()} ~\stackrel{\text{def}}{=}~ e$ \qquad the identity morphism is the identity element $e \in M$
+  \item $() \xrightarrow{\quad m \quad} () \xrightarrow{\quad m' \quad} () ~\stackrel{\text{def}}{=}~ m \bullet m'$ \qquad composition is the monoid binary relation $(\bullet)$, e.g. concatenation
+\end{itemize}
+
+\subsection{Preord and preordered classes}
+\textbf{Preord} is the category of preordered sets and monotone maps. \par
+
+Any preordered class (a class can be as big as the universe of all sets) $(A,\leq)$ gives rise to a category $\hat{A}$ if:
+\begin{itemize}
+  \item objects in $\hat{A}$ are elements in $A$ \par
+    $\textit{ob}\hat{A} ~\stackrel{\text{def}}{=}~ A$
+  \item the set of morphisms are either the singleton set or the empty set \par
+    $\forall x,y \in A ~.~ \hat{A}(x,y) ~\stackrel{\text{def}}{=}~
+    \begin{cases}
+      1 & x \leq y \\
+      \varnothing & x \nleq y
+   \end{cases}$
+  \item the identity morphism is the element of the singleton set \par $id_{x} ~\stackrel{\text{def}}{=}~ ()$
+  \item composition is the element of the singleton set, so all objects are related by this element.\par
+    $x \xrightarrow{\quad () \quad} y \xrightarrow{\quad () \quad} z ~\stackrel{\text{def}}{=}~ ()$
+\end{itemize}
+
+\subsection{Groupoid}
+A \textbf{groupoid} is a category where every morphism is an isomorphism.
+
+The category of sets and bijective functions, for instance, is a \textbf{groupoid}.
+
+\section{Functor examples}
+
+\subsection{Revisiting the inverse of town routes}
+
+To solve the problem for whether any non-identity morphism has an inverse in the category of towns and routes, we can define the following functor:\par
+
+$F : \textbf{Town} \rightarrow \textbf{Nat} = \widetilde{(\mathbb{N},0,+)}$ \qquad i.e. from \textbf{Town} to the monoid of natural numbers
+\begin{itemize}
+  \item $\forall ~town \in \textbf{Town} ~.~ town \mapsto () \in \textbf{Nat}$
+  \item $(f : x_0 \rightarrow x_n = x_0 \xrightarrow{\quad f = [x_0,~\dots~,x_n] \quad} x_n) \mapsto n \in \textbf{Nat}$
+  \item $(id_{x_0} = x_0 \xrightarrow{\quad [x_0] \quad} x_0) \mapsto 0 \in \textbf{Nat}$
+  \item $(f ; g = x_0 \xrightarrow{\quad f = [x_0,~\dots~,x_n] \quad} x_n  \xrightarrow{\quad g = [x_n,~\dots~,x_m] \quad} x_m) \mapsto n + m \in \textbf{Nat}$
+\end{itemize}
+Isomorphisms are preserved by functors.\par
+Morphisms are equal to the route lengths in \textbf{Nat}. \par
+Composition is concatenation of routes in \textbf{Town}, which translates to addition in \textbf{Nat}.\par
+An identity morphism is the singleton route in \textbf{Town} and zero $(0)$ in \textbf{Nat}.\par
+$\therefore$~ Since adding (composing) any number with a non-zero natural number (morphism) in \textbf{Nat} will never produce the identity $(0)$, and \textbf{Town} is mapped to \textbf{Nat} by $F$ (preserving isomorphisms), concatenating two routes that are not the identity will never produce the identity route either. Thus, no non-identity route has an inverse.
+
+\subsection{Define a functor $C^{op}  \times C \rightarrow $Set---the hom-functor}
+Given category $C$, define functor $F : C^{op} \times C \rightarrow \textbf{Set}$ \par
+
+First, we know category $C^{op} \times C$ consists of:
+\begin{itemize}
+  \item \textbf{(objects)} $(X,Y) \in C^{op} \times C$ where $X \in C^{op}$ and $Y \in C$. \par
+    i.e.  $X,Y \in C$ since objects in $C$ are in $C^{op}$
+  \item \textbf{(morphisms)} $(X,Y) \mapsto (X',Y') \in C^{op} \times C$ is $(f,g)$ where \par
+    $f : X \rightarrow X' \in C^{op}$ \par
+    $g : Y \rightarrow Y' \in C$
+  \item \textbf{(identities)} $id_{(X,Y)} = (id_X , id_Y)$
+  \item \textbf{(composition)} $(f,g) ; (f',g') = (f;f',g;g')$ where\par
+    $f;f' \in C^{op}$ \quad or \quad $f';f \in C$ \par
+    $g;g' \in C$
+\end{itemize}
+
+Now we define what we map to in \textbf{Set}:
+\begin{itemize}
+  \item \textbf{(objects)} $(X,Y) \in (C \times C^{op}) \mapsto hom_C(X,Y) \in \textbf{Set}$
+  \item \textbf{(morphisms)} for \textbf{Set}, a morphism is all functions $hom_C(X,Y) \rightarrow hom_C(X',Y')$ \par
+    Given $(f,g)$ where \par
+    $f : X \rightarrow X' \in C^{op}$ \qquad i.e. $f : X' \rightarrow X \in C$ \par
+    $g : Y \rightarrow Y' \in C$ \par
+    We can define a morphism (functions) $hom_C(X,Y) \rightarrow hom_C(X',Y') \in \textbf{Set}$ as follows: \par
+    if $h \in hom_C(X,Y)$ \par
+    then $f;h;g \in hom_C(X',Y')$ \par
+    so $h \mapsto f;h;g$
+\end{itemize}
+In short:
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+(X,Y)    &\quad hom_C(X,Y)    & \quad h \in hom_C(X,Y)  \\
+\uTo{f}\dTo{g}& \dTo        & \dMapsto       \\
+(X',Y')  &\quad hom_C(X',Y')  & \quad f;h;g \in hom_C(X',Y')
+\end{diagram}
+& &
+\end{tabular}
+
+Now we check it is a valid functor:
+\begin{itemize}
+  \item \textbf{(identities)} $(id_X,id_Y) \mapsto h \mapsto id_X ; h ; id_Y = id_{hom_C(X,Y)}$
+  \item \textbf{(composition)} Given $h \in hom_C(X,Y)$ \par
+We want to show that the following composition is valid: \par
+$hom_C(X,Y) \xrightarrow{A} hom_C(X',Y') \xrightarrow{B} hom_C(X'',Y'')$
+\par
+    $h' = f;h;g$ and $f';h';g' = f';f;h;g;g'$\par
+    we know that composition $A ; B : hom_C(X,Y) \rightarrow hom_C(X'',Y'') = f';f;h;g;g'$\par
+We now prove composition is maintained by the functor:\par
+    Given $(f,g) = (X' \rightarrow X'',Y \rightarrow Y')$ and $(f',g') = (X \rightarrow X',Y' \rightarrow Y'')$\par
+$\newline$
+$F((f;g)~;~(f';g'))$\par $= F(f';f~,~g;g')$ \par
+$=(f';f;h;g;g')$ where $h \in hom_C(X,Y)$ \par
+$= f';(f;h;g);g'$\par
+$= f'; F(f,g) ; g'$\par
+$= F(f,g) ; F(f';g)$\par
+
+$\newline$
+i.e.
+
+\begin{tabular}{cccl}
+\begin{diagram}[labelstyle=\scriptscriptstyle]
+hom_C(X,Y)          &                & \\
+                    & \rdTo{f;h;g}   & \\
+\dTo{(f';f);h;(g;g')}{} &            & hom_C(X',Y') \\
+              & \ldTo{f';(f;h;g);g'} & \\
+hom_C(X'',Y'')      &                &
+\end{diagram}
+& &
+\end{tabular}
+
+\end{itemize}
+
+\section{Homework exercises}
+
+\subsection{Define a functor from $C$ to a preorder}
+
+Every category can be turned into a preordered class.
+
+Given category $C$, write a preorder $X \leq Y$ when $\exists X \rightarrow Y$
+
+\textbf{(Part 1) Prove $\leq$ is a preorder on $obC$:}
+
+A preorder is a reflexive and transitive binary relation $\leq$.
+\begin{itemize}
+\item reflexive because for any $X \in C$, $id_X$ is a morphism $X \rightarrow X$, so $X \leq X$ exists and is reflexive.
+\item transitive because if $X \leq Y \leq Z$ then we can pick a map $f : X \rightarrow Y$ and a map $g : Y \rightarrow Z$ so $f;g$ is a map $X \rightarrow Z$. This morphism is mapped to $X \leq Y$, which means the composition is transitive.
+\end{itemize}
+
+For instance, in \textbf{Set}, $A \leq B$ if $B$ is non-empty or $A$ is empty.
+
+(functions are left-total and single-valued)
+
+\textbf{(Part 2) Define a functor $C \rightarrow \widehat{C} = \widehat{(\textit{ob}C, \leq)}$}
+
+$F : C \rightarrow \widehat{obC,\leq}$
+
+\begin{itemize}
+  \item $\textit{ob} \widehat{C} \stackrel{\text{def}}{=}  \textit{ob}C$ \qquad i.e. $\forall X \in C ~.~ X \in C \mapsto X \in \widehat{C}$
+
+  \item Given $X \xrightarrow{f} Y \in C$, we know $\widehat{C}(X,Y) \stackrel{\text{def}}{=} 1$ \qquad
+    i.e. $\forall X \leq Y \in C ~.~ f \mapsto ()$
+
+therefore:
+\begin{tabular}{l}
+\begin{diagram}
+A       &          & FA = A  \\
+\dTo{F} & \rMapsto & \dTo{}{()}\\
+B       &          & FB = B
+\end{diagram}
+\end{tabular}
+\end{itemize}
+
+We know this is valid because:
+\begin{itemize}
+  \item $id_X \stackrel{\text{def}}{=} ()$ \qquad i.e. $\forall x,id_X \in C ~.~ id_X \mapsto ()$
+  \item $X \xrightarrow{\quad () \quad} Y \xrightarrow{\quad () \quad} Z ~\stackrel{\text{def}}{=}~ ()$ \qquad i.e. composition is maintained trivially,
+\end{itemize}
+
+Additionally, since this definition describes a category that rises from a preordered class (section 3.4.2), we can argue from the resulting category that $C$ is a preordered class.
+
+\subsection{Full and faithful}
+
+Given $F_{X,Y} : hom_C(X,Y) \rightarrow hom_D(F(X),F(Y))$
+
+\begin{itemize}
+\item A \textbf{full} mapping is one which is \textbf{surjective}. (left-total)
+
+So $F_{X,Y}$ is full if it is surjective.
+
+i.e. every morphism in $F~C$ is mapped to by at least one morphism of $C$.
+
+symbolically: $\forall g \in F~C ~.~\exists f \in C ~.~g =F(f)  $
+
+\item A \textbf{faithful} mapping is one which is \textbf{injective}.
+
+*note: injective and single-valued are not the same.
+
+i.e. $F_{X,Y}$ is faithful when for every $X,Y \in C$, $f : X \rightarrow Y$ and $g : X \rightarrow Y$, $F~f = F~g$ implies $f = g$
+
+in short: $\forall f , g \in C~.~F(f) = F(g) \Rightarrow f = g$
+
+
+\item $F_{X,Y}$ is \textbf{fully faithful} if it is both full and faithful.
+
+\end{itemize}
+
+Note that these definitions only care about morphisms being mapped.
+
+Is the functor defined in 3.6.2 faithful and/or full?
+
+We check:
+\begin{itemize}
+
+\item The functor is full because:
+
+$\forall g : F X \rightarrow F Y \in D$
+
+\quad $\exists f : X \rightarrow Y \in C$
+
+\qquad such that $F_{X,Y}(f) = g$
+
+since $g$ impies $X \leq Y$ and $X \leq Y$ implies there is an $f : X \rightarrow Y$, then $f \mapsto g$, so every $f$ is mapped.
+
+\item The functor is not faithful for $C$ if $C(X,Y) = \{f,g,h\}$. This is because all morphisms will be mapped to the same thing, the empty tuple.
+
+So, $f,g,h \mapsto ()$, meaning, $F_{X,Y}$ is not single valued. However, is this the case for every $C$?
+
+To prove this is not the case, we can define a category $D$ where this is an injective mapping. e.g. Given $hom_D(X,Y) = {k}$, $k \mapsto ()$. This is injective.
+
+Therefore, $F$ is \textbf{not faithful in general}.
+
+\end{itemize}
+
+\subsection{Prove category $(C(X,X), id_X, ;_{X,X})$ is a monoid}
+
+Given category $C$ with object $X$, the monoid $M = (C(X,X), id_X, \underset{X,X};)$ is defined as follows:
+\begin{itemize}
+  \item $id_X$ is the identity element for morphisms
+  \item $;_{X,X}$ (composition) is an associative binary operator by definition (it comes from a category, where--by definition--composition is associative)
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Define a functor $\widehat{(C(X,X), id_X, ;_{X,X})}$ to $C$}                                                                                                              %
+%                                                                                                                                                                                       %
+% $F : \widehat{(C(X,X), id_X, ;_{X,X})} \rightarrow C$                                                                                                                                 %
+%                                                                                                                                                                                       %
+% Given $C(X,X) = {()}$                                                                                                                                                                 %
+%                                                                                                                                                                                       %
+%                                                                                                                                                                                       %
+% \begin{itemize}                                                                                                                                                                       %
+% \item first we map objects: $F_{objects} : (C(X,X)) \rightarrow obC = () \mapsto X$                                                                                                   %
+%                                                                                                                                                                                       %
+% Objects in the category that rises from a monoid are the singleton set.                                                                                                               %
+%                                                                                                                                                                                       %
+% \item then we map morphisms: $F_{morphisms} : C(X,X) \rightarrow C(X,X) = f \mapsto f$                                                                                                %
+%                                                                                                                                                                                       %
+% Morphisms in the category that rises from a monoid are in the carrier set, i.e. $C(X,X)$. So we have all morphisms available.                                                         %
+%                                                                                                                                                                                       %
+% \end{itemize}                                                                                                                                                                         %
+%                                                                                                                                                                                       %
+% This maintains composition and identity by definition of $C$, therefore, it is valid. This is a fully faithful functor since all morphisms are mapped to $C$, and it's single valued. %
+%                                                                                                                                                                                       %
+% However, we could also define it this way:                                                                                                                                            %
+%                                                                                                                                                                                       %
+% \begin{itemize}                                                                                                                                                                       %
+% \item we map objects: $F_{objects} : (C(X,X)) \rightarrow obC = () \mapsto X$                                                                                                         %
+%                                                                                                                                                                                       %
+% \item we map morphisms: $F_{morphisms} : C(X,X) \rightarrow C(X,X) = f \mapsto id_x$                                                                                                  %
+% \end{itemize}                                                                                                                                                                         %
+%                                                                                                                                                                                       %
+% This is perfectly valid, however, the result is not faithful in general and not full in general either.                                                                               %
+%                                                                                                                                                                                       %
+% \subsection{The isomorphisms of a category form a groupoid}                                                                                                                           %
+%                                                                                                                                                                                       %
+% Given a category $C$, show that its isomorphisms form a groupoid.                                                                                                                     %
+%                                                                                                                                                                                       %
+% A groupoid $(G,^{-1},*)$ satifies the following conditions:                                                                                                                           %
+% \begin{itemize}                                                                                                                                                                       %
+%   \item \textbf{all defined relations are associative}: $\forall a*b,b*c \in C ~.~ (a * b) * c = a * (b * c)$                                                                         %
+%   \item \textbf{inverses are defined}: $\forall a \in C ~.~ (a^{-1} * a) \wedge (a * a^{-1})$                                                                                         %
+%   \item \textbf{identities are defined}: $\forall a * b \in C ~.~ (a * b * b^{-1} = a) \wedge (a^{-1} * a * b = b)$                                                                   %
+% \end{itemize}                                                                                                                                                                         %
+% It follows that:                                                                                                                                                                      %
+% \begin{itemize}                                                                                                                                                                       %
+%   \item $(a^{-1})^{-1} = a$ is always defined, every morphism is an isomorphism.                                                                                                      %
+%   \item $\forall a*b \in C ~.~ (a * b)^{-1} =  a^{-1} * b^{-1}$                                                                                                                       %
+% \end{itemize}                                                                                                                                                                         %
+%                                                                                                                                                                                       %
+% Proof: \par                                                                                                                                                                           %
+% We attempt to define a groupoid $(C(X,Y),^{-1},;_{X,Y})$ for all ismorphisms $X \cong Y \in C$.                                                                                       %
+% \begin{itemize}                                                                                                                                                                       %
+% \item Morphism composition is associative, meaning, ismorphism composition is also associative.\par                                                                                   %
+% All relations in the groupoid of isomorphisms is defined by morphism composition.\par                                                                                                 %
+% Therefore, \textbf{all defined relations are associative}.                                                                                                                            %
+% \item All isomorphisms in $C$ are morphisms with inverses. \par                                                                                                                       %
+% $\forall A \cong B \in C ~.~ f : A \rightarrow B \wedge f^{-1} : B \rightarrow A$ \par                                                                                                %
+% Compositions of isomorphisms therefore have inverses.\par                                                                                                                             %
+% Therefore, \textbf{inverses are defined} in $(C(X,Y),^{-1},;)$.                                                                                                                       %
+%                                                                                                                                                                                       %
+% \item All objects in $C$ have a defined identity morphism. \par                                                                                                                       %
+% All isomorphisms in $C$ include identity morphisms.\par                                                                                                                               %
+% Therefore, \textbf{identities are defined} in $(C(X,Y),^{-1},;)$.                                                                                                                     %
+% \end{itemize}                                                                                                                                                                         %
+%                                                                                                                                                                                       %
+% Given $(C(X,Y),^{-1},;_{X,Y})$ formed by all isomorphisms of $C$ satisfy the definition of a groupoid,  $(C(X,Y),^{-1},;_{X,Y})$ is a groupoid; isomorphisms of $C$ form a groupoid.  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
