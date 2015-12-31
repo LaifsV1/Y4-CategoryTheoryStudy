@@ -105,7 +105,7 @@ With the previous definition, we were unable to define \textbf{Set}, however. To
 \begin{lstlisting}[mathescape]
 record Category {l : Level} : Set (lsuc l) where
   field Ob  : Set l
-        Hom : Ob $\rightarrow$ Ob $\rightarrow$ Set i
+        Hom : Ob $\rightarrow$ Ob $\rightarrow$ Set l
         id  : {X : Ob} $\rightarrow$ Hom X X
         _$\blacktriangleright$_ : {X Y Z : Ob} $\rightarrow$ Hom X Y $\rightarrow$ Hom Y Z $\rightarrow$ Hom X Z
 
@@ -154,7 +154,7 @@ It is possible to define a monad in the traditional way:
   \tabitem id  $\mu$ & &a multiplication natural transformation\\
 \end{tabular}
 
-The downside is that it would also require the definition of a functor and all the proves associated. Alternatively, a monad can also be defined as a Kleisli Triple:
+The downside is that it would also require the definition of a functor and all the proofs associated. Alternatively, a monad can also be defined as a Kleisli Triple:
 
 \qquad
 \begin{tabular}{lll}
@@ -261,7 +261,7 @@ We can now define the state monad---on \textbf{Set}---and prove its laws:
 state : Set $\to$ Monad {lsuc lzero}{set}
 state S = record
           { T  = $\lambda$ A $\to$ S $\to$ (S $\times$ A)
-          ; $\eta$  = $\lambda$ a $\to$ $\lambda$ s $\to$ (s , a)
+          ; $\eta$   = $\lambda$ a $\to$ $\lambda$ s $\to$ (s , a)
           ; _* = $\lambda$ g f $\to$ $\lambda$ s $\to$ g ($\pi_2$ (f s)) ($\pi_1$ (f s))
           ; monad_lid   = refl
           ; monad_rid   = lemma_rid
