@@ -130,7 +130,7 @@ With this definition, we can finally define \textbf{Set}:
 set : Category
 set = record
         { Ob  = Set
-        ; Hom = $\lambda$ X Y $\rightarrow$ Set $\rightarrow$ Set
+        ; Hom = $\lambda$ X Y $\rightarrow$ X $\rightarrow$ Y
         ; id  = $\lambda$ X $\rightarrow$ X
         ; _$\blacktriangleright$_ = $\lambda$ {X Y Z : Set} f g  $\rightarrow$ $\lambda$ x $\rightarrow$ g (f x)
         ; left_id  = refl
